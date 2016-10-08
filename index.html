@@ -1,0 +1,39 @@
+<!doctype html>
+<html ng-app="michiganTendies">
+    <head>
+        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+        <title>Michigan Tendies</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+        <script src="menus.js"></script>
+        <link rel="stylesheet" href="menus.css">
+    </head>
+    <body>
+        <div ng-controller="MichiganTendiesController as menuList">
+            <ul>
+                <li class="list-title">
+                    <div id="flex">
+                        <input ng-model="searchTerm" ng-change="menuList.filterItems(searchTerm)" id="inner" contenteditable="true" spellcheck="false"> 
+                        at Michigan
+                    </div>
+                </li>
+                <li ng-repeat="(name, item) in filteredItems" class="list-food-name">
+                    <span>{{item.name}}</span>
+                    <ul>
+                        <li ng-repeat="(diningHallName, diningHallMatch) in item.diningHallMatches" class="list-dininghall-name">
+                            <div class="expanding">
+                                <a href="{{menuList.getGoogleMapsURL(diningHallMatch)}}"><span>{{diningHallName}}:</span></a>
+                                <ul>
+                                    <li ng-repeat="(date, mealNames) in diningHallMatch.mealTimes" class="list-item">
+                                        <span><i>{{date}}</i> for <b>{{menuList.printableMealNames(mealNames)}}</b></span>
+                                    </li>
+                                </ul> 
+                            </div>
+                        </li>
+                    </ul>
+                <li>
+                    Anders Boberg
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>
