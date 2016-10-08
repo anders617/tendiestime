@@ -226,12 +226,10 @@ angular.module("michiganTendies", [])
                 $scope.searchTerm = "";
                 var count = 0;
                 $interval(function () {
-                    $interval(function () {
-                        $scope.searchTerm += initialSearchTerm[count];
-                        menuList.filterItems($scope.searchTerm);
-                        count += 1;
-                    }, 280, initialSearchTerm.length);
-                }, 500, 1);
+                    $scope.searchTerm += initialSearchTerm[count];
+                    menuList.filterItems($scope.searchTerm);
+                    count += 1;
+                }, 200, initialSearchTerm.length);
             };
             menuList.init();
         });
