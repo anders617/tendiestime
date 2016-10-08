@@ -28,7 +28,7 @@ angular.module("michiganTendies", [])
             menuList.diningHallListURL = "https://crossorigin.me/https://mobile.its.umich.edu/michigan/services/dining/shallowDiningHallGroups?_type=json";
             menuList.diningHallMenuURL = "https://crossorigin.me/https://mobile.its.umich.edu/michigan/services/dining/shallowMenusByDiningHall?_type=json&diningHall=";
             menuList.diningHallMenuDetailsURL = "https://crossorigin.me/https://mobile.its.umich.edu/michigan/services/dining/menusByDiningHall?_type=json&diningHall=";
-            
+
             menuList.foodAliases = {
                 "tendies": "chicken tenders"
             };
@@ -196,6 +196,8 @@ angular.module("michiganTendies", [])
                                         );
                             }
                         }
+                        menuList.filterItems($scope.searchTerm);
+                        $scope.$apply();
                     }
                 });
             };
@@ -215,7 +217,6 @@ angular.module("michiganTendies", [])
                         $scope.filteredItems[menuList.items[itemNames[i]].name] = menuList.items[itemNames[i]];
                     }
                 }
-                console.log(menuList.items);
                 console.log($scope.filteredItems);
             };
 
@@ -225,10 +226,12 @@ angular.module("michiganTendies", [])
                 $scope.searchTerm = "";
                 var count = 0;
                 $interval(function () {
-                    $scope.searchTerm += initialSearchTerm[count];
-                    menuList.filterItems($scope.searchTerm);
-                    count += 1;
-                }, 280, initialSearchTerm.length);
+                    $interval(function () {
+                        $scope.searchTerm += initialSearchTerm[count];
+                        menuList.filterItems($scope.searchTerm);
+                        count += 1;
+                    }, 280, initialSearchTerm.length);
+                }, 500, 1);
             };
             menuList.init();
         });
