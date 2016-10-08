@@ -221,10 +221,14 @@ angular.module("michiganTendies", [])
 
             menuList.init = function () {
                 menuList.loadItems();
+                var initialSearchTerm = "Tendies";
+                $scope.searchTerm = "";
+                var count = 0;
                 $interval(function () {
-                    $scope.searchTerm = "Tendies";
+                    $scope.searchTerm += initialSearchTerm[count];
                     menuList.filterItems($scope.searchTerm);
-                }, 1000, 1);
+                    count += 1;
+                }, 280, initialSearchTerm.length);
             };
             menuList.init();
         });
