@@ -245,23 +245,39 @@ app.controller("MichiganTendiesController", function ($scope, $filter, $interval
         }
     };
 
+    menuList.getDocHeight = function () {
+        var D = document;
+        return Math.max(
+                D.body.scrollHeight, D.documentElement.scrollHeight,
+                D.body.offsetHeight, D.documentElement.offsetHeight,
+                D.body.clientHeight, D.documentElement.clientHeight
+                );
+    };
+
+    menuList.amountScrolled = function () {
+        var winheight = window.innerHeight || (document.documentElement || document.body).clientHeight;
+        var docheight = menuList.getDocHeight();
+        var scrollTop = window.pageYOffset || (document.documentElement || document.body.parentNode || document.body).scrollTop;
+        var trackLength = docheight - winheight;
+        var pctScrolled = Math.floor(scrollTop / trackLength * 100); // gets percentage scrolled (ie: 80 or NaN if tracklength == 0)
+        return pctScrolled;
+    };
+
     $scope.totalDisplayed = 20;
 
     $scope.loadMore = function () {
         $scope.totalDisplayed += 20;
     };
-    
-    $window.ontouchmove = function() {
-        $scope.scrollPos = document.body.scrollTop || document.documentElement.scrollTop || 0;
-        if (document.body.scrollTop + document.body.offsetHeight >= 3*document.body.scrollHeight/4) { //at the bottom
+
+    $window.ontouchmove = function () {
+        if (menuList.amountScrolled() >= 75) { //If scrolled more than 75% of page
             $scope.loadMore();
             $scope.$apply();
         }
     };
 
     $window.onscroll = function () {
-        $scope.scrollPos = document.body.scrollTop || document.documentElement.scrollTop || 0;
-        if (document.body.scrollTop >= 3*document.body.scrollHeight/4) { //at the bottom
+        if (menuList.amountScrolled() >= 75) { //If scrolled more than 75% of page
             $scope.loadMore();
             $scope.$apply();
         }
