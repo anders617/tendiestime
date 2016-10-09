@@ -250,6 +250,14 @@ app.controller("MichiganTendiesController", function ($scope, $filter, $interval
     $scope.loadMore = function () {
         $scope.totalDisplayed += 20;
     };
+    
+    $window.ontouchmove = function() {
+        $scope.scrollPos = document.body.scrollTop || document.documentElement.scrollTop || 0;
+        if (document.body.scrollTop + document.body.offsetHeight >= 3*document.body.scrollHeight/4) { //at the bottom
+            $scope.loadMore();
+            $scope.$apply();
+        }
+    };
 
     $window.onscroll = function () {
         $scope.scrollPos = document.body.scrollTop || document.documentElement.scrollTop || 0;
