@@ -4,6 +4,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
         <title>Michigan Tendies</title>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+        <script src="infinitescroll.js"></script>
         <script src="menus.js"></script>
         <link rel="stylesheet" href="menus.css">
     </head>
@@ -16,15 +17,15 @@
                         at Michigan
                     </div>
                 </li>
-                <li ng-repeat="(name, item) in filteredItems" class="list-food-name">
+                <li ng-repeat="item in filteredItems| orderBy:'name.toString()' | limitTo:totalDisplayed" class="list-food-name">
                     <span>{{item.name}}</span>
                     <ul>
-                        <li ng-repeat="(diningHallName, diningHallMatch) in item.diningHallMatches" class="list-dininghall-name">
+                        <li ng-repeat="diningHallMatch in item.diningHallMatchesArray| orderBy:'name.toString()'" class="list-dininghall-name">
                             <div class="expanding">
-                                <a href="{{menuList.getGoogleMapsURL(diningHallMatch)}}"><span>{{diningHallName}}:</span></a>
+                                <a href="{{menuList.getGoogleMapsURL(diningHallMatch)}}"><span>{{diningHallMatch.name}}:</span></a>
                                 <ul>
-                                    <li ng-repeat="(date, mealNames) in diningHallMatch.mealTimes" class="list-item">
-                                        <span><i>{{date}}</i> for <b>{{menuList.printableMealNames(mealNames)}}</b></span>
+                                    <li ng-repeat="mealTime in diningHallMatch.mealTimesArray| orderBy:'date'" class="list-item">
+                                        <span><i>{{mealTime.formattedDate}}</i> for <b>{{menuList.printableMealNames(mealTime.mealNames)}}</b></span>
                                     </li>
                                 </ul> 
                             </div>
