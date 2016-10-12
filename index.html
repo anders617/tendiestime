@@ -5,37 +5,26 @@
         <title>Michigan Tendies</title>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
         <script src="js/app.js"></script>
-        <script src="js/controllers.js"></script>
         <script src="js/constants.js"></script>
         <script src="js/factories.js"></script>
         <script src="js/services.js"></script>
+        <script src="js/directives.js"></script>
+        <script src="js/controllers.js"></script>
         <link rel="stylesheet" href="css/app.css">
     </head>
     <body>
         <div ng-controller="MichiganTendiesController as menuList">
-            <ul>
+            <ul mt-infinite-scroll>
                 <li class="list-title">
                     <div id="flex">
                         <input ng-model="searchTerm" ng-change="menuList.filterItems(searchTerm)" ng-readonly="{{allowInput}}" id="inner" spellcheck="false"> 
                         at Michigan
                     </div>
                 </li>
-                <li ng-repeat="item in filteredItems| orderBy:'name.toString()' | limitTo:totalDisplayed" class="list-food-name">
-                    <span>{{item.name}}</span>
-                    <ul>
-                        <li ng-repeat="diningHallMatch in item.diningHallMatchesArray| orderBy:'name.toString()'" class="list-dininghall-name">
-                            <div class="expanding">
-                                <a href="{{menuList.getGoogleMapsURL(diningHallMatch)}}"><span>{{diningHallMatch.name}}:</span></a>
-                                <ul>
-                                    <li ng-repeat="mealTime in diningHallMatch.mealTimesArray| orderBy:'date'" class="list-item">
-                                        <span><i>{{mealTime.formattedDate}}</i> for <b>{{menuList.printableMealNames(mealTime.mealNames)}}</b></span>
-                                    </li>
-                                </ul> 
-                            </div>
-                        </li>
-                    </ul>
+                <mt-loading ng-show="isLoadingData" percentage="loadingPercentage"></mt-loading>
+                <mt-item-list ng-show="!isLoadingData" items="filteredItems" controller="menuList" limit="totalDisplayed"></mt-item-list>
                 <li>
-                    Anders Boberg
+                    © 2016 Anders Boberg
                 </li>
             </ul>
         </div>
