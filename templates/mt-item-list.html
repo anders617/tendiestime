@@ -1,0 +1,15 @@
+<li ng-repeat="item in items| orderBy:'name.toString()' | limitTo:limit" class="list-food-name">
+    <span>{{item.name}}</span>
+    <ul>
+        <li ng-repeat="diningHallMatch in item.diningHallMatchesArray| orderBy:'name.toString()'" class="list-dininghall-name">
+            <div class="expanding">
+                <a href="{{controller.getGoogleMapsURL(diningHallMatch)}}"><span>{{diningHallMatch.name}}:</span></a>
+                <ul>
+                    <li ng-repeat="mealTime in diningHallMatch.mealTimesArray| orderBy:'date'" class="list-item">
+                        <span><i>{{mealTime.formattedDate}}</i> for <b>{{controller.printableMealNames(mealTime.mealNames)}}</b></span>
+                    </li>
+                </ul> 
+            </div>
+        </li>
+    </ul>
+</li>
