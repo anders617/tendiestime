@@ -15,6 +15,29 @@ module.service("GoogleMaps", [
     }
 ]);
 
+
+module.service("MDiningDataFilter", [
+    "MDiningData", "foodAliases",
+    function mDiningDataFilterService(MDiningData, foodAliases) {
+        this.filterItemsWithKeyword = function (keyword) {
+            var filteredItems = [];
+            var formattedSearchTerm = keyword.toLowerCase();
+            if (foodAliases.hasOwnProperty(formattedSearchTerm)) {
+                formattedSearchTerm = foodAliases[formattedSearchTerm];
+            }
+            for (var name in MDiningData.items) {
+                if (!MDiningData.items.hasOwnProperty(name) || typeof MDiningData.items[name] === "undefined") {
+                    continue;
+                }
+                if (name.search(formattedSearchTerm) !== -1) {
+                    filteredItems.push(MDiningData.items[name]);
+                }
+            }
+            return filteredItems;
+        };
+    }
+]);
+
 module.service("DiningHallURL", [
     "crossOriginURL", "diningHallMenuDetailsBaseURL", "diningHallMenuBaseURL", "diningHallListURL",
     function diningHallMenuDetailsURLService(crossOriginURL, diningHallMenuDetailsBaseURL, diningHallMenuBaseURL, diningHallListURL) {
@@ -65,7 +88,7 @@ module.service("HttpClient", [
                     if (typeof onSuccess !== "undefined") {
                         onSuccess(anHttpRequest.responseText);
                     }
-                } else if (anHttpRequest.readyState === 4){
+                } else if (anHttpRequest.readyState === 4) {
                     if (typeof onFailure !== "undefined") {
                         onFailure();
                     }
@@ -78,8 +101,8 @@ module.service("HttpClient", [
 ]);
 
 module.service("MDiningAPI", [
-    "$filter", "HttpClient", "DiningHallURL", "diningHallGroupName", "MDiningData",
-    function mDiningAPIService($filter, HttpClient, DiningHallURL, diningHallGroupName, MDiningData) {
+    "$filter", "HttpClient", "DiningHallURL", "diningHallGroupName", "MDiningData", "foodAliases",
+    function mDiningAPIService($filter, HttpClient, DiningHallURL, diningHallGroupName, MDiningData, foodAliases) {
         var _MDiningAPI = this;
 
         /**
@@ -196,6 +219,7 @@ module.service("MDiningAPI", [
         };
 
         function isComplete(completionStatus) {
+            var total = 0, complete = 0;
             for (var diningHall in completionStatus) {
                 if (!completionStatus.hasOwnProperty(diningHall)) {
                     continue;
@@ -208,17 +232,20 @@ module.service("MDiningAPI", [
                         if (!completionStatus[diningHall][date].hasOwnProperty(name)) {
                             continue;
                         }
-                        if (completionStatus[diningHall][date][name] === false) {
-                            return false;
+                        total += 1;
+                        if (completionStatus[diningHall][date][name] === true) {
+                            complete += 1;
                         }
                     }
                 }
             }
-            return true;
+            diningDataStatusCallback(complete / total);
+            return complete === total;
         }
 
         var completionStatus;
         var diningDataCallback;
+        var diningDataStatusCallback;
 
         function handleDiningHallsList(diningHalls) {
             completionStatus = {};
@@ -276,14 +303,23 @@ module.service("MDiningAPI", [
          *
          * @callback detailedDiningHallListCallback
          */
+        
+        /**
+         * Called when the proportion of requests completed is updated.
+         * 
+         * @callback detailedDiningHallListStatusCallback
+         * @param {number} status A proportion of requests which have been made.
+         */
 
         /**
          * Requests a list of dining halls and fills in menus and menu details.
          *
-         * @param {detailedDiningHallListCallback} callback
+         * @param {detailedDiningHallListStatusCallback} onUpdateStatus
+         * @param {detailedDiningHallListCallback} onCompletion
          */
-        this.requestDiningData = function (callback) {
-            diningDataCallback = callback;
+        this.requestDiningData = function (onUpdateStatus, onCompletion) {
+            diningDataCallback = onCompletion;
+            diningDataStatusCallback = onUpdateStatus;
             _MDiningAPI.requestDiningHallList(handleDiningHallsList);
         };
     }
