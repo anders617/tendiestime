@@ -1,1 +1,1 @@
-# mygithubpage
+# Michigan Tendies
