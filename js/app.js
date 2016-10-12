@@ -7,7 +7,7 @@
 angular.module("MichiganTendies", [
     "MichiganTendies.constants",
     "MichiganTendies.factories",
-    "MichiganTendies.services",
     "MichiganTendies.controllers",
+    "MichiganTendies.services",
     "MichiganTendies.directives"
 ]);
