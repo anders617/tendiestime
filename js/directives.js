@@ -65,7 +65,7 @@ module.directive("mtInfiniteScroll", [
                 };
 
                 $window.ontouchmove = function () {
-                    if (amountScrolled() >= Math.floor(($scope.totalDisplayed - 20)/($scope.totalDisplayed))) { //If scrolled more than 75% of page
+                    if (amountScrolled() >= Math.floor(100 * ($scope.totalDisplayed - 20)/($scope.totalDisplayed))) { //If scrolled more than 75% of page
                         loadMore();
                         $scope.$apply();
                     }
