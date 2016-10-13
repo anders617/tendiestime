@@ -7,11 +7,11 @@
 var module = angular.module("MichiganTendies.constants", []);
 
 /**
- * https://crossorigin.me necessary in order to access michigan dining endpoints
+ * Cross origin proxy necessary in order to access michigan dining endpoints
  * from browsers which block cross origin calls without an Access-Control-Allow-Origin
  * header.
  */
-module.constant("crossOriginURL", "https://crossorigin.me/");
+module.constant("crossOriginURL", "https://crossorigin.me/");//"http://cors-anywhere.herokuapp.com/");//"http://cors.io/?");
 
 module.constant(
         "diningHallMenuDetailsBaseURL",
@@ -25,7 +25,7 @@ module.constant(
 
 module.constant(
         "diningHallListURL",
-        "https://crossorigin.me/https://mobile.its.umich.edu/michigan/services/dining/shallowDiningHallGroups?_type=json"
+        "https://mobile.its.umich.edu/michigan/services/dining/shallowDiningHallGroups?_type=json"
         );
 
 module.constant("diningHallGroupName", "DINING HALLS");
