@@ -1,12 +1,17 @@
 
 @font-face {
     font-family: univers;
-    src: url(fonts/univers-light-normal.ttf)
+    src: url(fonts/univers-light-normal.woff)
 }
 
 div {
   width: 100%;
   margin: 30px;
+}
+
+h1 {
+    font-family: univers, Verdana, sans-serif;
+    font-size:  7vw;
 }
 
 h2 {
