@@ -64,7 +64,7 @@ module.controller("MichiganTendiesController", [
                     $scope.searchTerm += initialSearchTerm[count];
                     menuList.filterItems($scope.searchTerm);
                     count += 1;
-                }, 200, initialSearchTerm.length);
+                }, 100, initialSearchTerm.length);
                 $scope.allowInput = true;
             });
         };
