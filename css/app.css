@@ -1,56 +1,56 @@
 
-@font-face {
-    font-family: univers;
-    src: url(fonts/univers-light-normal.woff)
-}
+//@font-face {
+  //  font-family: univers;
+//    src: url(fonts/univers-light-normal.woff)
+//}
 
-div {
-  width: 100%;
-  margin: 30px;
-}
+
+//div {
+  //  width: 100%;
+//}
 
 h1 {
-    font-family: univers, Verdana, sans-serif;
+    //font-family: univers, Verdana, sans-serif;
     font-size:  7vw;
 }
 
 h2 {
-  font: 400 40px/1.5 univers, Verdana, sans-serif;
-  margin: 0;
-  padding: 0;
+    //font: 400 40px/1.5 univers, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 li {
-  font: 200 20px/1.5 univers, Verdana, sans-serif;
-  font-size: 1vw;
-  border-bottom: 1px solid #ccc;
+    font: 200 20px/1.5 univers, Verdana, sans-serif;
+    font-size: 1vw;
+    border-bottom: 1px solid #ccc;
 }
 
 li:last-child {
-  border: none;
+    border: none;
 }
 
 li div.expanding {
 
-  -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
-  -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
-  -o-transition: font-size 0.3s ease, background-color 0.3s ease;
-  -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
-  transition: font-size 0.3s ease, background-color 0.3s ease;
-  display: block;
-  width: 100%;
-  margin: 0px;
+    -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+    transition: font-size 0.3s ease, background-color 0.3s ease;
+    display: block;
+    width: 100%;
+    margin: 0px;
 }
 
 li div.expanding:hover {
-  font-size: 5vw;
-  background: #f6f6f6;
+    font-size: 5vw;
+    background: #f6f6f6;
 }
 
 a {
@@ -62,17 +62,18 @@ a:hover {
     color: graytext;
 }
 
-input {
+.mt-title-input {
     font-weight: normal;
     font-size: 7vw;
-    color: #ffcb05;
-    width: 30vw;
+    color: #ffcb05!important;
+    width: 30vw!important;
+    height: 7vw!important;
 }
 
 #flex {
-  display: flex;
-  display: -webkit-flex;
-  flex-wrap: wrap;
+    display: flex;
+    display: -webkit-flex;
+    flex-wrap: wrap;
 }
 
 #inner {
@@ -104,4 +105,111 @@ input {
     color: #00274c;
     margin-left: 20px;
     font-size: 2.5vw;
+}
+
+.attribute {
+    text-indent: -9999px;
+    display: block;
+    height: 4vw;
+    width: 4vw;
+    float: right;
+    margin-top: 1vw;
+    margin-left: 5px;
+    background-repeat: no-repeat;
+}
+
+.attribute-unmarked {
+    background-image: url('../images/unmarked-100px.svg');
+    background-size: 100%;
+}
+
+.attribute-featured { 
+    background-image:url('../images/featured-100px.svg'); 
+    background-size: 100%; 
+}
+
+.attribute-glutenfree { 
+    background-image:url('../images/glutenfree-100px.svg');
+    background-size: 100%; 
+}
+
+.attribute-halal { 
+    background-image:url('../images/halal-100px.svg'); 
+    background-size: 100%;
+}
+
+.attribute-mhealthy { 
+    background-image:url('../images/mhealthy-100px.svg'); 
+    background-size: 100%; 
+}
+
+.attribute-vegan { 
+    background-image:url('../images/vegan-100px.svg'); 
+    background-size: 100%; 
+}
+
+.attribute-vegetarian { 
+    background-image:url('../images/vegetarian-100px.svg'); 
+    background-size: 100%; 
+}
+
+.attribute-spicy { 
+    background-image:url('../images/spicy-100px.svg'); 
+    background-size: 100%; 
+}
+
+.mt-filters-list-item {
+    display: inline-block;
+    display: flex;
+    justify-content: space-between;
+}
+
+.mt-filters-list-datepicker {
+    height: 4vw;
+    margin-top: 1vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
+}
+
+.mt-filter-attribute {
+    text-indent: -9999px;
+    height: 8vw;
+    width: 8vw;
+    margin: 2vw;
+    float: left;
+    background-repeat: no-repeat;
+    opacity: 1;
+}
+
+.mt-filter-attribute:focus {
+    outline: none;
+    border: 0;
+}
+
+.mt-filter-attribute-tint:focus {
+    outline: none;
+    border: 0;
+}
+
+.mt-filter-attribute-tint {
+  position: relative;
+  height: 8vw;
+  width: 8vw;
+  cursor: pointer;
+}
+
+.mt-filter-attribute-tint:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: none;
+  transition: all .3s ease-out;
+}
+
+.mt-filter-attribute-tint:hover:before { 
+    background: rgba(255,255,255, 0.5); 
 }
