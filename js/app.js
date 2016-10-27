@@ -5,9 +5,13 @@
  */
 
 angular.module("MichiganTendies", [
+    "ng",
+    "ngAnimate",
+    "ngAria",
+    "ngMaterial",
     "MichiganTendies.constants",
     "MichiganTendies.factories",
-    "MichiganTendies.controllers",
     "MichiganTendies.services",
+    "MichiganTendies.controllers",
     "MichiganTendies.directives"
 ]);
