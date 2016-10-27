@@ -1,0 +1,13 @@
+<li class="mt-filters-list-item">
+    <span ng-repeat="(attribute, isIncluded) in attributes" title="{{attribute}}" class="mt-filter-attribute attribute-{{attribute}}" ng-style="attributeOpacities[attribute]">
+        <div class="mt-filter-attribute-tint" ng-click="switchedAttribute(attribute)"></div>
+    </span>
+</li>
+<li class="mt-filters-list-item">
+    <span class="mt-filters-list-datepicker">From 
+        <md-datepicker ng-model="start" md-min-date="startDate" md-max-date="end" md-placeholder="Start Date"></md-datepicker>
+    </span>
+    <span class="mt-filters-list-datepicker">To
+        <md-datepicker ng-model="end" md-min-date="start" md-max-date="endDate" md-placeholder="End Date"></md-datepicker>
+    </span>
+</li>
