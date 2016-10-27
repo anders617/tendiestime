@@ -6,6 +6,47 @@
 
 var module = angular.module("MichiganTendies.directives", []);
 
+module.directive("mtFilters", [
+    "defaultDateRange",
+    function (defaultDateRange) {
+        return {
+            restrict: "E",
+            scope: {
+                attributes: "=attributes",
+                diningHalls: "=diningHalls",
+                onFilterChange: "=onFilterChange"
+            },
+            templateUrl: "/templates/mt-filters.html",
+            link: function (scope) {
+                scope.switchedAttribute = function (attributeName) {
+                    scope.attributes[attributeName] = !scope.attributes[attributeName];
+                    scope.attributeOpacities[attributeName] = scope.attributes[attributeName] ? {opacity: 1} : {opacity: 0.3};
+                    scope.onFilterChange(scope.attributes, scope.start, scope.end, scope.diningHalls);
+                };
+
+                scope.attributeOpacities = {};
+                function init() {
+                    for (var attribute in scope.attributes) {
+                        scope.attributeOpacities[attribute] = scope.attributes[attribute] ? {opacity: 1} : {opacity: 0.3};
+                    }
+                    scope.start = new Date(defaultDateRange.start.getTime());
+                    scope.startDate = defaultDateRange.start;
+                    scope.end = new Date(defaultDateRange.end.getTime());
+                    scope.endDate = defaultDateRange.end;
+                    console.log(scope.onFilterChange)
+                    scope.$watch("start", function() {
+                        scope.onFilterChange(scope.attributes, scope.start, scope.end, scope.diningHalls);
+                    });
+                    scope.$watch("end", function() {
+                        scope.onFilterChange(scope.attributes, scope.start, scope.end, scope.diningHalls);
+                    });
+                }
+                ;
+                init();
+            }
+        };
+    }]);
+
 module.directive("mtItemList", function () {
     return {
         restrict: "E",
@@ -19,11 +60,11 @@ module.directive("mtItemList", function () {
 });
 
 module.directive("mtLoading", [
-    function() {
+    function () {
         return {
             restrict: "E",
             scope: {
-                percentage:"=percentage"
+                percentage: "=percentage"
             },
             template: "<li><div class='list-food-name'>Loading Data...{{percentage}}%</div></li>"
         };
@@ -31,22 +72,23 @@ module.directive("mtLoading", [
 ]);
 
 module.directive("mtInfiniteScroll", [
-    "$window","$document",
+    "$window", "$document",
     function ($window, $document) {
         return {
             restrict: "A",
             link: function ($scope) {
                 var windowElement = angular.element($window);
-                
-                function getHeight () {
+
+                function getHeight() {
                     return Math.max(
                             $document[0].body.scrollHeight, $document[0].documentElement.scrollHeight,
                             $document[0].body.offsetHeight, $document[0].documentElement.offsetHeight,
                             $document[0].body.clientHeight, $document[0].documentElement.clientHeight
                             );
-                };
+                }
+                ;
 
-                function amountScrolled () {
+                function amountScrolled() {
                     console.log(getHeight());
                     var winheight = windowElement.innerHeight || ($document[0].documentElement || $document[0].body).clientHeight;
                     console.log(winheight);
@@ -56,16 +98,18 @@ module.directive("mtInfiniteScroll", [
                     var trackLength = docheight - winheight;
                     var pctScrolled = Math.floor(scrollTop / trackLength * 100); // gets percentage scrolled (ie: 80 or NaN if tracklength == 0)
                     return pctScrolled;
-                };
+                }
+                ;
 
                 $scope.totalDisplayed = 20;
 
-                function loadMore () {
+                function loadMore() {
                     $scope.totalDisplayed += 20;
-                };
+                }
+                ;
 
                 $window.ontouchmove = function () {
-                    if (amountScrolled() >= Math.floor(100 * ($scope.totalDisplayed - 20)/($scope.totalDisplayed))) { //If scrolled more than 75% of page
+                    if (amountScrolled() >= Math.floor(100 * ($scope.totalDisplayed - 20) / ($scope.totalDisplayed))) { //If scrolled more than 75% of page
                         loadMore();
                         $scope.$apply();
                     }
@@ -74,8 +118,8 @@ module.directive("mtInfiniteScroll", [
                 $window.onscroll = function () {
                     console.log("Here1");
                     console.log(amountScrolled());
-                    console.log(Math.floor(100 * ($scope.totalDisplayed - 20)/($scope.totalDisplayed)) + " percent");
-                    if (amountScrolled() >= Math.floor(100 * ($scope.totalDisplayed - 20)/($scope.totalDisplayed))) { //If scrolled more than 75% of page
+                    console.log(Math.floor(100 * ($scope.totalDisplayed - 20) / ($scope.totalDisplayed)) + " percent");
+                    if (amountScrolled() >= Math.floor(100 * ($scope.totalDisplayed - 20) / ($scope.totalDisplayed))) { //If scrolled more than 75% of page
                         console.log("Here");
                         loadMore();
                         $scope.$apply();
