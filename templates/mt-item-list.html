@@ -1,9 +1,14 @@
 <li ng-repeat="item in items| orderBy:'name.toString()' | limitTo:limit" class="list-food-name">
     <span>{{item.name}}</span>
+    <span ng-repeat="attribute in item.attributes" title="{{attribute}}" class="attribute attribute-{{attribute}}">
+        <span class="tooltip">{{attribute}}</span>
+    </span>
     <ul>
         <li ng-repeat="diningHallMatch in item.diningHallMatchesArray| orderBy:'name.toString()'" class="list-dininghall-name">
             <div class="expanding">
-                <a href="{{controller.getGoogleMapsURL(diningHallMatch)}}"><span>{{diningHallMatch.name}}:</span></a>
+                <a href="{{controller.getGoogleMapsURL(diningHallMatch)}}" target="_blank">
+                    <span>{{diningHallMatch.name}}:</span>
+                </a>
                 <ul>
                     <li ng-repeat="mealTime in diningHallMatch.mealTimesArray| orderBy:'date'" class="list-item">
                         <span><i>{{mealTime.formattedDate}}</i> for <b>{{controller.printableMealNames(mealTime.mealNames)}}</b></span>
