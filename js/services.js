@@ -7,10 +7,22 @@
 var module = angular.module("MichiganTendies.services", []);
 
 module.service("GoogleMaps", [
-    "googleMapsBaseURL",
-    function googleMapsService(googleMapsBaseURL) {
+    "googleMapsBaseURL", "MDiningData",
+    function googleMapsService(googleMapsBaseURL, MDiningData) {
         this.getURL = function (diningHallMatch) {
-            return googleMapsBaseURL + encodeURIComponent(diningHallMatch.name);
+            var address = MDiningData.diningHalls[diningHallMatch.name].building.address;
+            console.log(MDiningData.diningHalls[diningHallMatch.name]);
+            if (typeof address === "undefined") {
+                return googleMapsBaseURL + encodeURIComponent(diningHallMatch.name);
+            } else {
+                return googleMapsBaseURL + encodeURIComponent(
+                        address.street1 + (address.street1 === null || address.streetq === "" ? "" : ",") +
+                        address.street2 + (address.street2 === null || address.street2 === "" ? "" : ",") +
+                        address.city + (address.city === null || address.city === "" ? "" : ",") +
+                        address.state + (address.state === null || address.state === "" ? "" : ",") +
+                        address.postalCode
+                        );
+            }
         };
     }
 ]);
@@ -31,6 +43,28 @@ module.service("MDiningDataFilter", [
                 }
                 if (name.search(formattedSearchTerm) !== -1) {
                     filteredItems.push(MDiningData.items[name]);
+                }
+            }
+            return filteredItems;
+        };
+
+        this.filterItems = function (keyword, attributes, startDate, endDate, diningHalls) {
+            var filteredItems = [];
+            var formattedSearchTerm = keyword.toLowerCase();
+            if (foodAliases.hasOwnProperty(formattedSearchTerm)) {
+                formattedSearchTerm = foodAliases[formattedSearchTerm];
+            }
+            for (var name in MDiningData.items) {
+                if (!MDiningData.items.hasOwnProperty(name) || typeof MDiningData.items[name] === "undefined") {
+                    continue;
+                }
+                if (name.search(formattedSearchTerm) !== -1 && MDiningData.items[name].hasAnyAttributes(attributes)) {
+                    var item = MDiningData.items[name].itemByFilteringDatesAndDiningHalls(startDate, endDate, diningHalls);
+                    if(item === null) {
+                        continue;
+                    }
+                    console.log(item);
+                    filteredItems.push(item);
                 }
             }
             return filteredItems;
@@ -283,7 +317,7 @@ module.service("MDiningAPI", [
                 details.category.forEach(function (category) {
                     category.menuItem.forEach(function (menuItem) {
                         MDiningData.addItem(
-                                menuItem.name,
+                                menuItem,
                                 diningHallName,
                                 new Date(details.date),
                                 details.formattedDate,
@@ -303,7 +337,7 @@ module.service("MDiningAPI", [
          *
          * @callback detailedDiningHallListCallback
          */
-        
+
         /**
          * Called when the proportion of requests completed is updated.
          * 
