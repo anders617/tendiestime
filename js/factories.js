@@ -38,6 +38,23 @@ module.factory("DiningHallMatch", [
                     this.mealTimesArray[index] = this.mealTimes[date];
                 }
             };
+            this.diningHallMatchByFilteringDates = function (startDate, endDate) {
+                var newDiningHallMatch = new DiningHallMatch(this.name);
+                for (var i = 0; i < this.mealTimesArray.length; i++) {
+                    var mealTime = this.mealTimesArray[i];
+                    if (mealTime.date.getTime() + 300000 >= startDate.getTime() &&
+                            mealTime.date.getTime() <= endDate.getTime()) {
+                        for(var j = 0;j < mealTime.mealNames.length;j++) {
+                            newDiningHallMatch.addMealTime(mealTime.date, mealTime.formattedDate, mealTime.mealNames[j]);
+                        }
+                        
+                    }
+                }
+                if(newDiningHallMatch.mealTimesArray.length === 0) {
+                    return null;
+                }
+                return newDiningHallMatch;
+            };
             this.mealTimesArray = [];
         };
     }
@@ -46,8 +63,9 @@ module.factory("DiningHallMatch", [
 module.factory("Item", [
     "DiningHallMatch",
     function itemFactory(DiningHallMatch) {
-        return function Item(name) {
-            this.name = name;
+        return function Item(menuItem) {
+            this.name = menuItem.name;
+            this.attributes = menuItem.attribute || [];
             this.diningHallMatches = {};
             this.diningHallMatchesArray = [];
             this.addDiningHall = function (diningHallName, date, formattedDate, mealName) {
@@ -62,21 +80,61 @@ module.factory("Item", [
                     this.diningHallMatchesArray[index] = this.diningHallMatches[diningHallName];
                 }
             };
+            
+            this.addDiningHallMatch = function (diningHallMatch) {
+                this.diningHallMatches[diningHallMatch.name] = diningHallMatch;
+                    this.diningHallMatchesArray.push(diningHallMatch);
+            };
+            
+            this.itemByFilteringDatesAndDiningHalls = function (startDate, endDate, diningHalls) {
+                var newItem = new Item({name: this.name, attribute: this.attributes});
+                for (var i = 0; i < this.diningHallMatchesArray.length; i++) {
+                    if(!diningHalls.hasOwnProperty(this.diningHallMatchesArray[i].name)) {
+                        continue;
+                    }
+                    console.log(i);
+                    var filteredDiningHall = this.diningHallMatchesArray[i].diningHallMatchByFilteringDates(startDate, endDate);
+                    if(filteredDiningHall === null) {
+                        continue;
+                    }
+                    newItem.addDiningHallMatch(filteredDiningHall);
+                }
+                if(newItem.diningHallMatchesArray.length === 0) {
+                    return null;
+                }
+                return newItem;
+            };
+            this.hasAnyAttributes = function (attributes) {
+                for (var attribute in attributes) {
+                    if (!attributes.hasOwnProperty(attribute)) {
+                        continue;
+                    }
+                    if(attribute === "unmarked" && attributes[attribute] && this.attributes.length === 0) {
+                        return true;
+                    }
+                    for (var i = 0; i < this.attributes.length; i++) {
+                        if (attributes[attribute] && attribute === this.attributes[i]) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            };
         };
     }
 ]);
 
 module.factory("MDiningData", [
-    "Item",
-    function mDiningDataFactory(Item) {
+    "Item", "defaultDateRange",
+    function mDiningDataFactory(Item, defaultDateRange) {
         return {
-            "diningHalls": {},
-            "items": {},
-            "isComplete": false,
-            "addItem": function (name, diningHallName, date, formattedDate, mealName) {
-                var trimmedName = name.trim().toLowerCase();
+            diningHalls: {},
+            items: {},
+            isComplete: false,
+            addItem: function (menuItem, diningHallName, date, formattedDate, mealName) {
+                var trimmedName = menuItem.name.trim().toLowerCase();
                 if (typeof this.items[trimmedName] === "undefined") {
-                    var newItem = new Item(name);
+                    var newItem = new Item(menuItem);
                     newItem.addDiningHall(diningHallName, date, formattedDate, mealName);
                     this.items[trimmedName] = newItem;
                 } else {
