@@ -37,4 +37,26 @@ module.constant(
         }
 );
 
-module.constant("googleMapsBaseURL", "http://maps.google.com/?daddr=");
+module.constant(
+        "defaultAttributes",
+        {
+            unmarked: true,
+            featured: true,
+            glutenfree: true,
+            halal: true,
+            mhealthy: true,
+            vegan: true,
+            vegetarian: true,
+            spicy: true
+        }
+);
+
+module.constant(
+        "defaultDateRange",
+        {
+            start: new Date(), //today
+            end: new Date(Date.now() + 604800000)//7 days later
+        }
+);
+
+module.constant("googleMapsBaseURL", "https://www.google.com/maps/place/");
