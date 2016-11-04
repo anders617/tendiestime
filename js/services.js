@@ -29,26 +29,41 @@ module.service("GoogleMaps", [
 
 
 module.service("MDiningDataFilter", [
-    "MDiningData", "foodAliases",
-    function mDiningDataFilterService(MDiningData, foodAliases) {
+    "MDiningData", "foodAliases", "defaultAttributes", "defaultDateRange",
+    function mDiningDataFilterService(MDiningData, foodAliases, defaultAttributes, defaultDateRange) {
         this.filterItemsWithKeyword = function (keyword) {
-            var filteredItems = [];
-            var formattedSearchTerm = keyword.toLowerCase();
-            if (foodAliases.hasOwnProperty(formattedSearchTerm)) {
-                formattedSearchTerm = foodAliases[formattedSearchTerm];
-            }
-            for (var name in MDiningData.items) {
-                if (!MDiningData.items.hasOwnProperty(name) || typeof MDiningData.items[name] === "undefined") {
-                    continue;
-                }
-                if (name.search(formattedSearchTerm) !== -1) {
-                    filteredItems.push(MDiningData.items[name]);
-                }
-            }
-            return filteredItems;
+            console.log(keyword, this.attributes, this.startDate, this.endDate, this.diningHalls);
+            return this.filterItems(keyword, this.attributes, this.startDate, this.endDate, this.diningHalls);
         };
 
         this.filterItems = function (keyword, attributes, startDate, endDate, diningHalls) {
+            if(typeof attributes === "undefined") {
+                this.attributes = defaultAttributes;
+            } else {
+            this.attributes = attributes;
+            }
+            if(typeof this.startDate === "undefined") {
+                this.startDate = defaultDateRange.start;
+            } else {
+            this.startDate = startDate;
+            }
+            if(typeof this.endDate === "undefined") {
+                this.endDate = defaultDateRange.end;
+            } else {
+                this.endDate = endDate;
+            }
+            if(typeof this.diningHalls === "undefined") {
+                this.diningHalls = MDiningData.diningHalls;
+            } else {
+                this.diningHalls = diningHalls;
+            }
+            this.startDate.setHours(0);
+            this.startDate.setMinutes(0);
+            this.startDate.setMilliseconds(0);
+            this.endDate.setHours(23);
+            this.endDate.setMinutes(59);
+            this.endDate.setMilliseconds(59);
+            console.log(keyword, this.attributes, this.startDate, this.endDate, this.diningHalls);
             var filteredItems = [];
             var formattedSearchTerm = keyword.toLowerCase();
             if (foodAliases.hasOwnProperty(formattedSearchTerm)) {
@@ -59,14 +74,14 @@ module.service("MDiningDataFilter", [
                     continue;
                 }
                 if (name.search(formattedSearchTerm) !== -1 && MDiningData.items[name].hasAnyAttributes(attributes)) {
-                    var item = MDiningData.items[name].itemByFilteringDatesAndDiningHalls(startDate, endDate, diningHalls);
-                    if(item === null) {
+                    var item = MDiningData.items[name].itemByFilteringDatesAndDiningHalls(this.startDate, this.endDate, diningHalls);
+                    if (item === null) {
                         continue;
                     }
-                    console.log(item);
                     filteredItems.push(item);
                 }
             }
+            console.log(filteredItems);
             return filteredItems;
         };
     }
@@ -311,7 +326,6 @@ module.service("MDiningAPI", [
         }
 
         function handleMenuDetails(diningHallName, mealName, date, details) {
-            console.log(details);
             if (typeof details !== "undefined" && details.hasCategories) {
                 MDiningData.diningHalls[diningHallName].details = details;
                 details.category.forEach(function (category) {
@@ -352,9 +366,18 @@ module.service("MDiningAPI", [
          * @param {detailedDiningHallListCallback} onCompletion
          */
         this.requestDiningData = function (onUpdateStatus, onCompletion) {
+            /*
             diningDataCallback = onCompletion;
             diningDataStatusCallback = onUpdateStatus;
-            _MDiningAPI.requestDiningHallList(handleDiningHallsList);
+            _MDiningAPI.requestDiningHallList(handleDiningHallsList);*/
+            HttpClient.get("https://michigantendies.herokuapp.com", function(response) {
+                var data = JSON.parse(response);
+                MDiningData.parseJsonMDiningData(data);
+                onUpdateStatus(1);
+                onCompletion();
+            }, function() {
+                console.log("Error in requestDiningData");
+            });
         };
     }
 ]);

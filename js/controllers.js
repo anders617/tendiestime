@@ -40,8 +40,8 @@ module.controller("MichiganTendiesController", [
         };
 
         controller.filterItems = function (searchTerm) {
+            $scope.filteredItems = MDiningDataFilter.filterItemsWithKeyword($scope.searchTerm);
             $scope.totalDisplayed = 20;
-            $scope.filteredItems = MDiningDataFilter.filterItemsWithKeyword(searchTerm);
         };
 
         controller.updateFilters = function (attributes, startDate, endDate, diningHalls) {
@@ -49,12 +49,6 @@ module.controller("MichiganTendiesController", [
             console.log(attributes);
             console.log(startDate);
             console.log(endDate);
-            startDate.setHours(0);
-            startDate.setMinutes(0);
-            startDate.setMilliseconds(0);
-            endDate.setHours(23);
-            endDate.setMinutes(59);
-            endDate.setMilliseconds(59);
             $scope.totalDisplayed = 20;
             $scope.filteredItems = MDiningDataFilter.filterItems($scope.searchTerm, attributes, startDate, endDate, diningHalls);
             console.log($scope.filteredItems);
@@ -78,8 +72,8 @@ module.controller("MichiganTendiesController", [
                 var count = 0;
                 $interval(function () {
                     $scope.searchTerm += initialSearchTerm[count];
-                    controller.filterItems($scope.searchTerm);
                     count += 1;
+                    controller.filterItems($scope.searchTerm);
                 }, 100, initialSearchTerm.length);
                 $scope.allowInput = true;
 

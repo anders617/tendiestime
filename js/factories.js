@@ -11,6 +11,11 @@ module.factory("MealTime", [
             this.date = date;
             this.formattedDate = formattedDate;
             this.mealNames = [];
+            this.parseJsonMealTime = function(json) {
+                this.date = new Date(json.date);
+                this.formattedDate = formattedDate;
+                this.mealNames = json.mealNames;
+            },
             this.addMealName = function (mealName) {
                 if (this.mealNames.indexOf(mealName) === -1) {
                     this.mealNames.push(mealName);
@@ -26,6 +31,18 @@ module.factory("DiningHallMatch", [
         return function DiningHallMatch(diningHallName) {
             this.name = diningHallName;
             this.mealTimes = {};
+            this.parseJsonDiningHallMatch = function(json) {
+                this.name = json.name;
+                for(var key in json.mealTimes) {
+                    if(!json.mealTimes.hasOwnProperty(key)) {
+                        continue;
+                    }
+                    var mealTime = new MealTime(new Date(json.mealTimes[key].date),json.mealTimes[key].formattedDate);
+                    mealTime.parseJsonMealTime(json.mealTimes[key]);
+                    this.mealTimes[key] = mealTime;
+                    this.mealTimesArray.push(mealTime);
+                }
+            },
             this.addMealTime = function (date, formattedDate, mealName) {
                 if (typeof this.mealTimes[date] === "undefined") {
                     var newMealTime = new MealTime(date, formattedDate);
@@ -68,6 +85,19 @@ module.factory("Item", [
             this.attributes = menuItem.attribute || [];
             this.diningHallMatches = {};
             this.diningHallMatchesArray = [];
+            this.parseJsonItem = function(json) {
+                this.name = json.name;
+                this.attributes = json.attributes;
+                for(var key in json.diningHallMatches) {
+                    if(!json.diningHallMatches.hasOwnProperty(key)) {
+                        continue;
+                    }
+                    var diningHallMatch = new DiningHallMatch(json.diningHallMatches[key].name);
+                    diningHallMatch.parseJsonDiningHallMatch(json.diningHallMatches[key]);
+                    this.diningHallMatches[key] = diningHallMatch;
+                    this.diningHallMatchesArray.push(diningHallMatch);
+                }
+            },
             this.addDiningHall = function (diningHallName, date, formattedDate, mealName) {
                 if (typeof this.diningHallMatches[diningHallName] === "undefined") {
                     var newMatch = new DiningHallMatch(diningHallName);
@@ -92,7 +122,6 @@ module.factory("Item", [
                     if(!diningHalls.hasOwnProperty(this.diningHallMatchesArray[i].name)) {
                         continue;
                     }
-                    console.log(i);
                     var filteredDiningHall = this.diningHallMatchesArray[i].diningHallMatchByFilteringDates(startDate, endDate);
                     if(filteredDiningHall === null) {
                         continue;
@@ -131,6 +160,17 @@ module.factory("MDiningData", [
             diningHalls: {},
             items: {},
             isComplete: false,
+            parseJsonMDiningData: function(json) {
+                this.diningHalls = json.diningHalls;
+                for(var key in json.items) {
+                    if(!json.items.hasOwnProperty(key)) {
+                        continue;
+                    }
+                    var item = new Item(json.items[key].name);
+                    item.parseJsonItem(json.items[key]);
+                    this.items[key] = item;
+                }
+            },
             addItem: function (menuItem, diningHallName, date, formattedDate, mealName) {
                 var trimmedName = menuItem.name.trim().toLowerCase();
                 if (typeof this.items[trimmedName] === "undefined") {
