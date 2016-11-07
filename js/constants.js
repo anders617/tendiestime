@@ -11,24 +11,8 @@ var module = angular.module("MichiganTendies.constants", []);
  * from browsers which block cross origin calls without an Access-Control-Allow-Origin
  * header.
  */
-module.constant("crossOriginURL", "https://crossorigin.me/");//"http://cors-anywhere.herokuapp.com/");//"http://cors.io/?");
 
-module.constant(
-        "diningHallMenuDetailsBaseURL",
-        "https://mobile.its.umich.edu/michigan/services/dining/menusByDiningHall?_type=json&diningHall="
-        );
-
-module.constant(
-        "diningHallMenuBaseURL",
-        "https://mobile.its.umich.edu/michigan/services/dining/shallowMenusByDiningHall?_type=json&diningHall="
-        );
-
-module.constant(
-        "diningHallListURL",
-        "https://mobile.its.umich.edu/michigan/services/dining/shallowDiningHallGroups?_type=json"
-        );
-
-module.constant("diningHallGroupName", "DINING HALLS");
+module.constant("MichiganTendiesAPIURL", "https://michigantendies.herokuapp.com/");
 
 module.constant(
         "foodAliases",

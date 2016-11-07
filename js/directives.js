@@ -33,7 +33,6 @@ module.directive("mtFilters", [
                     scope.startDate = defaultDateRange.start;
                     scope.end = new Date(defaultDateRange.end.getTime());
                     scope.endDate = defaultDateRange.end;
-                    console.log(scope.onFilterChange)
                     scope.$watch("start", function() {
                         scope.onFilterChange(scope.attributes, scope.start, scope.end, scope.diningHalls);
                     });
@@ -89,12 +88,9 @@ module.directive("mtInfiniteScroll", [
                 ;
 
                 function amountScrolled() {
-                    console.log(getHeight());
                     var winheight = windowElement.innerHeight || ($document[0].documentElement || $document[0].body).clientHeight;
-                    console.log(winheight);
                     var docheight = getHeight();
-                    var scrollTop = $document[0].body.scrollTop;//windowElement.pageYOffset || ($document[0].documentElement || $document[0].body.parentNode || $document[0].body).scrollTop;
-                    console.log(scrollTop);
+                    var scrollTop = $document[0].body.scrollTop;
                     var trackLength = docheight - winheight;
                     var pctScrolled = Math.floor(scrollTop / trackLength * 100); // gets percentage scrolled (ie: 80 or NaN if tracklength == 0)
                     return pctScrolled;
@@ -116,11 +112,7 @@ module.directive("mtInfiniteScroll", [
                 };
 
                 $window.onscroll = function () {
-                    console.log("Here1");
-                    console.log(amountScrolled());
-                    console.log(Math.floor(100 * ($scope.totalDisplayed - 20) / ($scope.totalDisplayed)) + " percent");
                     if (amountScrolled() >= Math.floor(100 * ($scope.totalDisplayed - 20) / ($scope.totalDisplayed))) { //If scrolled more than 75% of page
-                        console.log("Here");
                         loadMore();
                         $scope.$apply();
                     }

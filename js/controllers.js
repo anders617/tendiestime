@@ -7,8 +7,8 @@ var module = angular.module("MichiganTendies.controllers", []);
 
 
 module.controller("MichiganTendiesController", [
-    "$scope", "$interval", "MDiningAPI", "MDiningData", "GoogleMaps", "MDiningDataFilter", "defaultAttributes", "defaultDateRange",
-    function ($scope, $interval, MDiningAPI, MDiningData, GoogleMaps, MDiningDataFilter, defaultAttributes, defaultDateRange) {
+    "$scope", "$interval", "MDiningAPI", "MDiningData", "GoogleMaps", "MDiningDataFilter", "defaultAttributes",
+    function ($scope, $interval, MDiningAPI, MDiningData, GoogleMaps, MDiningDataFilter, defaultAttributes) {
         var controller = this;
 
         /**
@@ -45,13 +45,8 @@ module.controller("MichiganTendiesController", [
         };
 
         controller.updateFilters = function (attributes, startDate, endDate, diningHalls) {
-            console.log("UPDATING FILTER");
-            console.log(attributes);
-            console.log(startDate);
-            console.log(endDate);
             $scope.totalDisplayed = 20;
             $scope.filteredItems = MDiningDataFilter.filterItems($scope.searchTerm, attributes, startDate, endDate, diningHalls);
-            console.log($scope.filteredItems);
         };
 
         controller.init = function () {
@@ -60,13 +55,11 @@ module.controller("MichiganTendiesController", [
             $scope.allowInput = false;
             $scope.isLoadingData = true;
             $scope.loadingPercentage = 0;
-            console.log(MDiningAPI);
             MDiningAPI.requestDiningData(function (progress) {
                 $scope.loadingPercentage = Math.floor(100 * progress);
                 $scope.$apply();
             }, function () {
                 $scope.isLoadingData = false;
-                console.log(MDiningData);
                 var initialSearchTerm = "Tendies";
                 $scope.searchTerm = "";
                 var count = 0;
