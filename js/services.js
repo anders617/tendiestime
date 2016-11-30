@@ -99,6 +99,13 @@ module.service("HttpClient", [
          * @callback httpGetCallFailureCallback
          */
 
+         /**
+          * A callback when progress is made
+          *
+          * @callback httpGetProgressCallback
+          * @param {number} completion Percentage of download completed 
+          */
+
         /**
          * Sends a get request to the given url and calls handlers based on success
          * or failure.
@@ -108,8 +115,10 @@ module.service("HttpClient", [
          * the request is succesful.
          * @param {httpGetFailureCallback} onFailure A callback which is called when
          * the request fails.
+         * @param {httpGetProgressCallback} onProgress A callback which is called when
+         * the request fails.
          */
-        this.get = function (aUrl, onSuccess, onFailure) {
+        this.get = function (aUrl, onSuccess, onFailure, onProgress) {
             var anHttpRequest = new XMLHttpRequest();
             anHttpRequest.onreadystatechange = function () {
                 if (anHttpRequest.readyState === 4 && anHttpRequest.status === 200) {
@@ -120,6 +129,11 @@ module.service("HttpClient", [
                     if (typeof onFailure !== "undefined") {
                         onFailure();
                     }
+                }
+            };
+            anHttpRequest.onprogress = function(pe) {
+                if(pe.lengthComputable) {
+                    onProgress(pe.loaded / pe.total);
                 }
             };
             anHttpRequest.open("GET", aUrl, true);
@@ -159,6 +173,8 @@ module.service("MDiningAPI", [
                 onCompletion();
             }, function() {
                 console.log("Error in requestDiningData");
+            }, function(completion) {
+                onUpdateStatus(completion);
             });
         };
     }
