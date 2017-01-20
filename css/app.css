@@ -9,7 +9,7 @@ h1 {
 
 h2 {
     //font: 400 40px/1.5 univers, Verdana, sans-serif;
-    margin: 0;
+    //margin: 0;
     padding: 0;
 }
 
@@ -38,7 +38,7 @@ li div.expanding {
     transition: font-size 0.3s ease, background-color 0.3s ease;
     display: block;
     width: 100%;
-    margin: 0px;
+    //margin: 0px;
 }
 
 li div.expanding:hover {
