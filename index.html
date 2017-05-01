@@ -23,8 +23,9 @@
                     ga('create', 'UA-85646494-1', 'auto');
                     ga('send', 'pageview');</script>
         <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.1/angular-material.min.css">
-        <link rel="stylesheet" href="css/desktop.css" media="screen and (min-width: 769px)">
-        <link rel="stylesheet" href="css/mobile.css" media="screen and (max-width: 768px)">
+        <link rel="stylesheet" href="css/desktop.css" media="only screen and (min-device-width: 481px) and (min-width: 769px)">
+        <link rel="stylesheet" href="css/mobile.css" media="only screen and (min-device-width : 481px) and (max-width: 768px)">
+        <link rel="stylesheet" href="css/mobile.css" media="only screen and (min-device-width : 320px) and (max-device-width : 480px)">
     </head>
     <body>
         <div ng-controller="MichiganTendiesController as menuList">
