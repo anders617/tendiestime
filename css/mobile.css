@@ -1,3 +1,7 @@
+body {
+    padding: 20px;
+}
+
 h1 {
     //font-family: univers, Verdana, sans-serif;
     font-size:  7vw;
@@ -19,6 +23,7 @@ li {
     font: 200 20px/1.5 univers, Verdana, sans-serif;
     font-size: 1vw;
     border-bottom: 1px solid #ccc;
+    margin: 0;
 }
 
 li:last-child {
@@ -34,7 +39,7 @@ li div.expanding {
     transition: font-size 0.3s ease, background-color 0.3s ease;
     display: block;
     width: 100%;
-    margin: 0px;
+    //margin: 0px;
 }
 
 li div.expanding:hover {
