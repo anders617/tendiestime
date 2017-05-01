@@ -167,6 +167,10 @@ a:hover {
     margin-right: 0vw;
 }
 
+.md-datepicker-input {
+    font: 200 20px/1.5 univers, Verdana, sans-serif!important;
+}
+
 .mt-filter-attribute {
     text-indent: -9999px;
     height: 5vw;
