@@ -4,10 +4,13 @@
     </span>
 </li>
 <li class="mt-filters-list-item">
-    <span class="mt-filters-list-datepicker">From 
+    <span class="mt-filters-list-datepicker">
         <md-datepicker ng-model="start" md-min-date="startDate" md-max-date="end" md-placeholder="Start Date"></md-datepicker>
     </span>
-    <span class="mt-filters-list-datepicker">To
-        <md-datepicker ng-model="end" md-min-date="start" md-max-date="endDate" md-placeholder="End Date"></md-datepicker>
+    <div class="mt-filter-list-datepicker-text list-item mt-filters-list-datepicker">
+    	<b><center>to</center></b>
+    </div>
+    <span class="mt-filters-list-datepicker">
+		<md-datepicker ng-model="end" md-min-date="start" md-max-date="endDate" md-placeholder="End Date"></md-datepicker>
     </span>
 </li>

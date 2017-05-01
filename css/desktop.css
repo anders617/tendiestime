@@ -1,0 +1,211 @@
+h1 {
+    //font-family: univers, Verdana, sans-serif;
+    font-size:  5vw;
+}
+
+h2 {
+    //font: 400 40px/1.5 univers, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0px;
+    margin-left: 8px;
+    margin-right: 8px;
+    padding: 0;
+}
+
+li {
+    font: 200 20px/1.5 univers, Verdana, sans-serif;
+    font-size: 1vw;
+    border-bottom: 1px solid #ccc;
+}
+
+li:last-child {
+    border: none;
+}
+
+li div.expanding {
+
+    -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+    -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+    transition: font-size 0.3s ease, background-color 0.3s ease;
+    display: block;
+    width: 100%;
+    margin: 0px;
+}
+
+li div.expanding:hover {
+    font-size: 2.3vw;
+    background: #f6f6f6;
+}
+
+a {
+    text-decoration: none;
+    color: #ffcb05;
+}
+
+a:hover {
+    color: graytext;
+}
+
+.mt-title-input {
+    font-weight: normal;
+    font-size: 5vw;
+    color: #ffcb05!important;
+    width: 30vw!important;
+    height: 5vw!important;
+}
+
+#flex {
+    display: flex;
+    display: -webkit-flex;
+    flex-wrap: wrap;
+}
+
+#inner {
+    min-width: 100px;
+    outline:none;
+    margin: 0 20px;
+}
+
+.list-dininghall-name {
+    font-weight: normal;
+    color: #ffcb05;
+    font-size: 2vw;
+    margin-left: 20px;
+}
+
+.list-food-name {
+    font-weight: bold;
+    color: #00274c;
+    font-size: 2vw;
+}
+
+.list-title {
+    font-weight: normal;
+    font-size: 4vw;
+    color: #ffcb05;
+}
+
+.list-item {
+    color: #00274c;
+    margin-left: 20px;
+    font-size: 1.5vw;
+}
+
+.attribute {
+    text-indent: -9999px;
+    display: block;
+    height: 3vw;
+    width: 3vw;
+    float: right;
+    margin-top: 1px;
+    margin-left: 0px;
+    margin-right: 0vw;
+    background-repeat: no-repeat;
+}
+
+.attribute-unmarked {
+    background-image: url('../images/unmarked-100px.svg');
+    background-size: 100%;
+}
+
+.attribute-featured { 
+    background-image:url('../images/featured-100px.svg'); 
+    background-size: 100%; 
+}
+
+.attribute-glutenfree { 
+    background-image:url('../images/glutenfree-100px.svg');
+    background-size: 100%; 
+}
+
+.attribute-halal { 
+    background-image:url('../images/halal-100px.svg'); 
+    background-size: 100%;
+}
+
+.attribute-mhealthy { 
+    background-image:url('../images/mhealthy-100px.svg'); 
+    background-size: 100%; 
+}
+
+.attribute-vegan { 
+    background-image:url('../images/vegan-100px.svg'); 
+    background-size: 100%; 
+}
+
+.attribute-vegetarian { 
+    background-image:url('../images/vegetarian-100px.svg'); 
+    background-size: 100%; 
+}
+
+.attribute-spicy { 
+    background-image:url('../images/spicy-100px.svg'); 
+    background-size: 100%; 
+}
+
+.mt-filters-list-item {
+    display: flex;
+}
+
+.mt-filters-list-datepicker {
+    height: 3vw;
+    min-height: 36px;
+    margin-top: 1vw;
+    margin-left: 0vw;
+    margin-right: 2vw;
+}
+
+.mt-filter-list-datepicker-text {
+    font-size: 2vw;
+    margin-right: 0vw;
+}
+
+.mt-filter-attribute {
+    text-indent: -9999px;
+    height: 5vw;
+    width: 5vw;
+    margin: 1vw;
+    float: left;
+    background-repeat: no-repeat;
+    opacity: 1;
+}
+
+.mt-filter-attribute:focus {
+    outline: none;
+    border: 0;
+}
+
+.mt-filter-attribute-tint:focus {
+    outline: none;
+    border: 0;
+}
+
+.mt-filter-attribute-tint {
+  position: relative;
+  height: 5vw;
+  width: 5vw;
+  cursor: pointer;
+}
+
+.mt-filter-attribute-tint:before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: none;
+  transition: all .3s ease-out;
+}
+
+.mt-filter-attribute-tint:hover:before { 
+    background: rgba(255,255,255, 0.5); 
+}

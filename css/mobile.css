@@ -155,9 +155,15 @@ a:hover {
 
 .mt-filters-list-datepicker {
     height: 4vw;
+    min-height: 36px;
     margin-top: 1vw;
-    margin-left: 5vw;
-    margin-right: 5vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
+}
+
+.mt-filter-list-datepicker-text {
+    font-size: 3.5vw;
+    margin-right: 0vw;
 }
 
 .mt-filter-attribute {
