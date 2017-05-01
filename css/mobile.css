@@ -156,34 +156,34 @@ a:hover {
 }
 
 .mt-filters-list-datepicker {
-    height: 4vw;
-    min-height: 36px;
+    height: 8vw;
+    min-height: 8vw;
     margin-top: 1vw;
     margin-left: 0vw;
     margin-right: 0vw;
 }
 
 .md-datepicker-input {
-    font-size: 3.5vw;
     font: 200 20px/1.5 univers, Verdana, sans-serif!important;
+    font-size: 5vw!important;
 }
 
 .md-button {
-    height: 4vw!important;
-    width: 4vw!important;
-    line-height: 4vw!important;
+    height: 7vw!important;
+    width: 7vw!important;
+    line-height: 7vw!important;
     padding: 0px!important;
     border-radius: 0!important;
     margin: 0!important;
 }
 
 md-icon {
-    height: 4vw!important;
-    width: 4vw!important;
+    height: 7vw!important;
+    width: 7vw!important;
 }
 
 .mt-filter-list-datepicker-text {
-    font-size: 3.5vw;
+    font-size: 5vw;
     margin-right: 0vw;
 }
 
