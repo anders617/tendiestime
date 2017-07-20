@@ -89,9 +89,13 @@ module.directive("mtInfiniteScroll", [
 
                 function amountScrolled() {
                     var winheight = windowElement.innerHeight || ($document[0].documentElement || $document[0].body).clientHeight;
+                    console.log(winheight)
                     var docheight = getHeight();
-                    var scrollTop = $document[0].body.scrollTop;
+                    console.log(docheight)
+                    var scrollTop = window.pageYOffset//$document[0].body.scrollTop;
+                    console.log(scrollTop)
                     var trackLength = docheight - winheight;
+                    console.log(trackLength)
                     var pctScrolled = Math.floor(scrollTop / trackLength * 100); // gets percentage scrolled (ie: 80 or NaN if tracklength == 0)
                     return pctScrolled;
                 }
@@ -112,6 +116,7 @@ module.directive("mtInfiniteScroll", [
                 };
 
                 $window.onscroll = function () {
+                	console.log(amountScrolled())
                     if (amountScrolled() >= Math.floor(100 * ($scope.totalDisplayed - 20) / ($scope.totalDisplayed))) { //If scrolled more than 75% of page
                         loadMore();
                         $scope.$apply();
