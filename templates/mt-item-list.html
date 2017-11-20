@@ -7,8 +7,7 @@
         <li ng-repeat="diningHallMatch in item.diningHallMatchesArray| orderBy:'name.toString()'" class="list-dininghall-name">
             <div class="expanding">
                 <a href="{{controller.getGoogleMapsURL(diningHallMatch)}}" target="_blank">
-                    <!-- <span>{{diningHallMatch.name}}:</span> -->
-                    <span>Northwood 30</span>
+                    <span>{{diningHallMatch.name}}:</span>
                 </a>
                 <ul>
                     <li ng-repeat="mealTime in diningHallMatch.mealTimesArray| orderBy:'date'" class="list-item">
