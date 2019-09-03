@@ -9,7 +9,7 @@ This project is written with pure HTML/CSS/JS using the AngularJS framework. To 
 python3 -m http.server
 ```
 
-Makes use of the proxied michigan dining API here: michigantendies.herokuapp.com 
+Makes use of the proxied michigan dining API here: [michigantendies.herokuapp.com](https://michigantendies.herokuapp.com)
 
 ## Contributing
 
