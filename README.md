@@ -1,6 +1,6 @@
 # Michigan Tendies
 
-A website to help michigan students find where their favorite food is being served http://tendiesti.me.
+A website to help michigan students find where their favorite food is being served currently live @ [tendiesti.me](https://tendiesti.me).
 
 ## Development
 
