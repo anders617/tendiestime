@@ -12,7 +12,7 @@ var module = angular.module("MichiganTendies.constants", []);
  * header.
  */
 
-module.constant("MichiganTendiesAPIURL", "https://michigantendies.herokuapp.com/");
+module.constant("MichiganTendiesAPIURL", "https://michigan-dining-api.herokuapp.com/v1/all");
 
 module.constant(
         "foodAliases",

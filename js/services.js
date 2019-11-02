@@ -38,7 +38,7 @@ module.service("MDiningDataFilter", [
             if(typeof attributes === "undefined") {
                 this.attributes = defaultAttributes;
             } else {
-            this.attributes = attributes;
+                this.attributes = attributes;
             }
             if(typeof this.startDate === "undefined") {
                 this.startDate = defaultDateRange.start;

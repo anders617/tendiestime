@@ -87,7 +87,7 @@ module.factory("Item", [
             this.diningHallMatchesArray = [];
             this.parseJsonItem = function(json) {
                 this.name = json.name;
-                this.attributes = json.attributes;
+                this.attributes = json.attributes || [];
                 for(var key in json.diningHallMatches) {
                     if(!json.diningHallMatches.hasOwnProperty(key)) {
                         continue;
@@ -161,7 +161,9 @@ module.factory("MDiningData", [
             items: {},
             isComplete: false,
             parseJsonMDiningData: function(json) {
-                this.diningHalls = json.diningHalls;
+                json.diningHalls.forEach((diningHall) => {
+                    this.diningHalls[diningHall.name] = diningHall
+                });
                 for(var key in json.items) {
                     if(!json.items.hasOwnProperty(key)) {
                         continue;
