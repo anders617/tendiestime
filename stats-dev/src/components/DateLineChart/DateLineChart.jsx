@@ -1,5 +1,6 @@
 import React from 'react';
-import { GradientTealBlue } from '@vx/gradient';
+import Tilt from 'react-tilt';
+import { GradientPinkBlue, GradientOrangeRed } from '@vx/gradient';
 import { ParentSize } from '@vx/responsive';
 import { LinePath } from '@vx/shape';
 import { scaleLinear, scaleTime } from '@vx/scale';
@@ -9,29 +10,20 @@ import { AxisLeft, AxisBottom } from '@vx/axis';
 import { Text } from '@vx/text';
 import { extent, max } from 'd3-array';
 
-
-const data = [
-  { x: new Date('2019-11-02'), y: 2 },
-  { x: new Date('2019-11-03'), y: 5 },
-  { x: new Date('2019-11-04'), y: 7 },
-  { x: new Date('2019-11-05'), y: 4 },
-  { x: new Date('2019-11-06'), y: 2 },
-  { x: new Date('2019-11-07'), y: 10 },
-  { x: new Date('2019-11-08'), y: 9 },
-]
-
-const axisColor = '#282c34';
+const axisColor = '#FFFFFF';//'#282c34';
+const graphBackgroundColor = '#32deaa';
 const leftInset = 75;
 const rightInset = 50;
 const bottomInset = 60;
-const topInset = 50;
+const topInset = 70;
 
 const xAccessor = (d) => d.x
 const yAccessor = (d) => d.y
 
-function DateLineChart({height, width}) {
+function DateLineChart({ height, width, data, title }) {
   return (
-    <div className="DateLineChart" style={{height: height, width: width}}>
+    <div className="DateLineChart" style={{ height: height, maxWidth: '50%', flexBasis: '45%', margin: '25px' }}>
+      <Tilt className="Tilt" options={{ max : 5, scale: 1.05 }} style={{width: '100%', height: '100%'}}>
         <ParentSize className="graph-container">
           {({ width, height }) => {
             // bounds
@@ -51,33 +43,36 @@ function DateLineChart({height, width}) {
             });
             return (
               <svg width={width} height={height}>
-                <GradientTealBlue id="Background" vertical={false} />
-                <rect x={0} y={0} width={width} height={height} rx={10} fill="url(#Background)" />
-                <Text verticalAnchor="start" textAnchor="middle" x={width/2} y={10} width={width === 0 ? 1 : width}>Percent of Food Servings That Are MHealthy</Text>
+                <GradientOrangeRed id="Background" vertical={true} />
+                <GradientPinkBlue id="Title" vertical={false} />
+                <rect x={0} y={0} width={width} height={height} rx={10} fill={graphBackgroundColor} />
+                <Text style={{ fontFamily: 'Arial', fontWeight: 600, fontSize: '22px' }} fill={'#FFFFFF'} verticalAnchor="start" textAnchor="middle" x={width / 2} y={20} width={width === 0 ? 1 : width}>{title}</Text>
                 <LinePath
                   data={data}
                   x={d => xScale(xAccessor(d))}
                   y={d => yScale(yAccessor(d))}
-                  stroke={'#282c34'}
-                  strokeWidth={4}
+                  stroke={axisColor}
+                  strokeWidth={3}
                   curve={curveNatural}
                 />
                 <Group>
                   <AxisLeft
                     left={leftInset}
                     scale={yScale}
-                    label="Items Served"
+                    label="Percent"
                     labelProps={{
-                      fill: { axisColor },
+                      fill: axisColor,
                       textAnchor: 'middle',
-                      fontSize: 12,
+                      fontSize: 14,
+                      fontWeight: 600,
                     }}
                     stroke={axisColor}
                     tickStroke={axisColor}
                     tickLabelProps={(value, index) => ({
-                      fill: { axisColor },
+                      fill: axisColor,
                       textAnchor: 'end',
-                      fontSize: 10,
+                      fontSize: 12,
+                      fontWeight: 600,
                       dx: '-0.25em',
                       dy: '0.25em'
                     })}
@@ -87,16 +82,18 @@ function DateLineChart({height, width}) {
                     scale={xScale}
                     label="Date"
                     labelProps={{
-                      fill: { axisColor },
+                      fill: axisColor,
                       textAnchor: 'middle',
-                      fontSize: 12,
+                      fontSize: 14,
+                      fontWeight: 600,
                     }}
                     stroke={axisColor}
                     tickStroke={axisColor}
                     tickLabelProps={(value, index) => ({
-                      fill: { axisColor },
+                      fill: axisColor,
                       textAnchor: 'middle',
-                      fontSize: 10,
+                      fontSize: 8,
+                      fontWeight: 600,
                       dy: '0.25em'
                     })}
                   />
@@ -105,6 +102,7 @@ function DateLineChart({height, width}) {
             );
           }}
         </ParentSize>
+      </Tilt>
     </div>
   );
 }
