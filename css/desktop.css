@@ -73,6 +73,12 @@ a:hover {
     margin: 0 20px;
 }
 
+.stats-link {
+    margin: 10px;
+    float: right;
+    font-weight: 600;
+}
+
 .list-dininghall-name {
     font-weight: normal;
     color: #ffcb05;
