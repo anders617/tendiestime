@@ -4,6 +4,15 @@
   "private": true,
   "homepage": "https://tendiesti.me/stats/",
   "dependencies": {
+    "@vx/axis": "^0.0.192",
+    "@vx/group": "^0.0.192",
+    "@vx/responsive": "^0.0.192",
+    "@vx/scale": "^0.0.192",
+    "@vx/shape": "^0.0.192",
+    "@vx/text": "^0.0.192",
+    "d3-array": "^2.3.3",
+    "google-protobuf": "^3.10.0",
+    "grpc-web": "^1.0.6",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-scripts": "3.2.0"
