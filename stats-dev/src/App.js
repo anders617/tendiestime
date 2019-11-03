@@ -10,7 +10,7 @@ function App() {
           MDining Stats!
         </p>
       </header>
-      <ChartContainer width={'100vw'} height={'80vh'} />
+      <ChartContainer />
     </div>
   );
 }

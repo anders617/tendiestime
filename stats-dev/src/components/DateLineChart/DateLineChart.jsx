@@ -4,7 +4,7 @@ import { GradientPinkBlue, GradientOrangeRed } from '@vx/gradient';
 import { ParentSize } from '@vx/responsive';
 import { LinePath } from '@vx/shape';
 import { scaleLinear, scaleTime } from '@vx/scale';
-import { curveNatural } from '@vx/curve';
+import { curveCatmullRom } from '@vx/curve';
 import { Group } from '@vx/group';
 import { AxisLeft, AxisBottom } from '@vx/axis';
 import { Text } from '@vx/text';
@@ -22,7 +22,7 @@ const yAccessor = (d) => d.y
 
 function DateLineChart({ height, width, data, title }) {
   return (
-    <div className="DateLineChart" style={{ height: height, maxWidth: '50%', flexBasis: '45%', margin: '25px' }}>
+    <div className="DateLineChart" style={{ height: height, minWidth: '300px', flexBasis: '30%', margin: '15px', flexGrow: 1 }}>
       <Tilt className="Tilt" options={{ max : 5, scale: 1.05 }} style={{width: '100%', height: '100%'}}>
         <ParentSize className="graph-container">
           {({ width, height }) => {
@@ -52,8 +52,8 @@ function DateLineChart({ height, width, data, title }) {
                   x={d => xScale(xAccessor(d))}
                   y={d => yScale(yAccessor(d))}
                   stroke={axisColor}
-                  strokeWidth={3}
-                  curve={curveNatural}
+                  strokeWidth={2}
+                  curve={curveCatmullRom}
                 />
                 <Group>
                   <AxisLeft
@@ -66,6 +66,7 @@ function DateLineChart({ height, width, data, title }) {
                       fontSize: 14,
                       fontWeight: 600,
                     }}
+                    numTicks={5}
                     stroke={axisColor}
                     tickStroke={axisColor}
                     tickLabelProps={(value, index) => ({
@@ -89,6 +90,7 @@ function DateLineChart({ height, width, data, title }) {
                     }}
                     stroke={axisColor}
                     tickStroke={axisColor}
+                    numTicks={5}
                     tickLabelProps={(value, index) => ({
                       fill: axisColor,
                       textAnchor: 'middle',
