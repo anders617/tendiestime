@@ -5,6 +5,7 @@
   "homepage": "https://tendiesti.me/stats/",
   "dependencies": {
     "@vx/axis": "^0.0.192",
+    "@vx/gradient": "^0.0.192",
     "@vx/group": "^0.0.192",
     "@vx/responsive": "^0.0.192",
     "@vx/scale": "^0.0.192",
@@ -15,6 +16,7 @@
     "grpc-web": "^1.0.6",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
+    "react-icons": "^3.8.0",
     "react-scripts": "3.2.0",
     "react-share": "^3.0.1",
     "react-tilt": "^0.1.4"
