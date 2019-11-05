@@ -22,7 +22,7 @@ const yAccessor = (d) => d.y
 
 function DateLineChart({ height, width, data, title }) {
   return (
-    <div className="DateLineChart" style={{ height: height, minWidth: '300px', flexBasis: '30%', margin: '15px', flexGrow: 1 }}>
+    <div className="DateLineChart" style={{ height: height, minWidth: '300px', flexBasis: '0px', margin: '15px', flexGrow: 1, flexShrink: 1 }}>
       <Tilt className="Tilt" options={{ max : 5, scale: 1.05 }} style={{width: '100%', height: '100%'}}>
         <ParentSize className="graph-container">
           {({ width, height }) => {

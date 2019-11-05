@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Tilt from 'react-tilt';
-import DateLineChart from '../DateLineChart/DateLineChart';
+import { FoodStatsRequest } from 'mdining-proto';
 
-import { FoodStatsRequest, AllRequest } from '../../proto/mdining_pb';
-import mDiningService from '../..//api/mdiningservice';
+import DateLineChart from '../DateLineChart/DateLineChart';
+import mDiningClient from '../../api/mdiningservice';
 
 class ChartContainer extends Component {
     constructor(props) {
@@ -15,7 +15,7 @@ class ChartContainer extends Component {
     }
 
     componentDidMount() {
-        mDiningService.getFoodStats(new FoodStatsRequest())
+        mDiningClient.getFoodStats(new FoodStatsRequest())
             .then((res) => {
                 this.setState({ foodStats: res.getFoodstatsList(), error: null });
             }).catch((error) => {
@@ -58,11 +58,16 @@ class ChartContainer extends Component {
         }
         const allergenCharts = allergens.map((allergen) => {
             const data = foodStats.map((stat) => {
-                const allergens = stat.getAllergencountsMap();
+                const allergensMap = stat.getAllergencountsMap();
                 const totalFoodMealsServed = stat.getTotalfoodmealsserved();
+                let allergenCount = allergensMap.get(allergen);
+                if (isNaN(allergenCount)) {
+                    // If NaN then it isn't in the map which means there were no instances of it.
+                    allergenCount = 0;
+                }
                 return {
                     x: new Date(stat.getDate()),
-                    y: 100 * allergens.get(allergen) / totalFoodMealsServed,
+                    y: 100 * allergenCount / totalFoodMealsServed,
                 };
             });
             data.sort((a, b) => a.x - b.x);

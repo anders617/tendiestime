@@ -1,2 +1,2 @@
-import { MDiningPromiseClient } from '../proto/mdining_grpc_web_pb';
+import { MDiningPromiseClient } from 'mdining-proto';
 export default new MDiningPromiseClient('https://michigan-dining-api.herokuapp.com');
