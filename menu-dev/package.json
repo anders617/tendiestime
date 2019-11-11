@@ -1,0 +1,39 @@
+{
+  "name": "menu-dev",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "https://tendiesti.me/menu/",
+  "dependencies": {
+    "antd": "^3.25.0",
+    "mdining-proto": "^0.0.8",
+    "moment": "^2.24.0",
+    "react": "^16.11.0",
+    "react-device-detect": "^1.9.10",
+    "react-dom": "^16.11.0",
+    "react-scripts": "3.2.0"
+  },
+  "devDependencies": {
+    "eslint-plugin-import": "^2.18.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build && rm -r ../menu && mv build ../menu",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
