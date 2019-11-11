@@ -73,7 +73,11 @@ a:hover {
     margin: 0 20px;
 }
 
-.stats-link {
+.header {
+    display: block;
+}
+
+.header-link {
     margin: 10px;
     float: right;
     font-weight: 600;

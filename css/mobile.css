@@ -73,10 +73,16 @@ a:hover {
     margin: 0 20px;
 }
 
-.stats-link {
+.header {
+    display: block;
+    margin: 10px;
+}
+
+.header-link {
     margin: 20px;
-    font-size: 16pt;
+    font-size: 26pt;
     font-weight: 600;
+    display: inline;
 }
 
 .list-dininghall-name {

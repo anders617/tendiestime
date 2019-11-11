@@ -33,15 +33,46 @@ class Menu extends Component {
             .catch((error) => console.log(error));
     }
 
-    getStartTimeOfMeal(meal) {
-        const { selectedDiningHall, selectedDate, diningHalls, menus } = this.state;
-        const dayEvent = diningHalls.length === 0 || menus.length === 0 ? null : diningHalls[selectedDiningHall].getDayeventsList().find((dayEvent) => moment(dayEvent.getKey()).day() === selectedDate.day());
-        const hours =  !dayEvent ? null : dayEvent.getCalendareventList().find((event) => event.getEventtitle().toLowerCase() === meal.toLowerCase());
+    getHoursOfMenu(menu) {
+        const { selectedDiningHall, selectedDate, diningHalls } = this.state;
+        const dayEvent = diningHalls.length === 0 ? null : diningHalls[selectedDiningHall].getDayeventsList().find((dayEvent) => moment(dayEvent.getKey()).day() === selectedDate.day());
+        const hours =  !dayEvent ? null : dayEvent.getCalendareventList().find((event) => event.getEventtitle().toLowerCase() === menu.getMeal().toLowerCase());
+        if (!hours) return null;
+        return hours;
+    }
+
+    getStartTimeOfMenu(menu) {
+        const hours = this.getHoursOfMenu(menu);
         if (!hours) return null;
         return moment(hours.getEventtimestart());
     }
 
+    getEndTimeOfMenu(menu) {
+        const hours = this.getHoursOfMenu(menu);
+        if (!hours) return null;
+        return moment(hours.getEventtimeend());
+    }
+
     firstMenuWithCategories(menus) {
+        const { selectedDate } = this.state;
+        const now = moment();
+        if (selectedDate.isSame(now, 'day')) {
+            const withCategories = menus
+                .map((menu, idx) => {return {idx, menu};})
+                .filter((item) => item.menu.getHascategories() && this.getEndTimeOfMenu(item.menu) && this.getEndTimeOfMenu(item.menu).isSameOrAfter(now));
+            if (withCategories.length === 0) return 0;
+            const closestMenuInTime = withCategories.sort((a, b) => {
+                const aHours = this.getHoursOfMenu(a.menu);
+                const bHours = this.getHoursOfMenu(b.menu);
+                if (now.isAfter(moment(aHours.getEventtimestart()))) {
+                    return -1;
+                } else if (now.isAfter(moment(bHours.getEventtimestart()))) {
+                    return 1;
+                }
+                return moment(aHours.getEventtimestart()).diff(now) - moment(bHours.getEventtimestart()).diff(now);
+            })[0];
+            return closestMenuInTime.idx;
+        }
         const idx = menus.findIndex((menu) => menu.getHascategories());
         if (idx === -1) return 0;
         return idx;
@@ -113,9 +144,7 @@ class Menu extends Component {
                     <Radio.Button style={{ minWidth: 205 }} key={entry.idx} value={entry.idx}>{entry.diningHall.getName()}</Radio.Button>
                 );
             });
-        const dayEvent = diningHalls.length === 0 || menus.length === 0 ? null : diningHalls[selectedDiningHall].getDayeventsList().find((dayEvent) => moment(dayEvent.getKey()).day() === selectedDate.day());
-        const hours =  !dayEvent ? null : dayEvent.getCalendareventList().find((event) => event.getEventtitle().toLowerCase() === menus[selectedMenu].getMeal().toLowerCase() || (event.getEventtitle().toLowerCase() === 'open'));
-
+        const hours =  diningHalls.length === 0 || menus.length === 0 ? null : this.getHoursOfMenu(menus[selectedMenu]);
         const startTime = hours ? moment(hours.getEventtimestart()) : moment();
         const endTime = hours ? moment(hours.getEventtimeend()) : moment();
 
@@ -132,7 +161,7 @@ class Menu extends Component {
             }
         }
         const mealOptions = menus
-            .map((menu, idx) => { return { idx, meal: menu.getMeal(), startTime: this.getStartTimeOfMeal(menu.getMeal()) }; })
+            .map((menu, idx) => { return { idx, meal: menu.getMeal(), startTime: this.getStartTimeOfMenu(menu) }; })
             .sort((a, b) => {
                 if (a.startTime && b.startTime) {
                     return a.startTime.isBefore(b.startTime) ? -1 : a.meal.localeCompare(b.meal);
