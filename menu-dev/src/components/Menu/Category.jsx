@@ -1,5 +1,6 @@
 import React from 'react';
 import {Card, List } from 'antd';
+import Heart from '../Heart/Heart';
 
 const Category = ({category}) => {
     return (
@@ -28,6 +29,7 @@ const Category = ({category}) => {
                                 </div>
                             )}
                         />
+                        <Heart food={item.getName().toLowerCase()} />
                     </List.Item>
                 )}
             />
