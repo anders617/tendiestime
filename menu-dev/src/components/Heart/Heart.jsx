@@ -13,6 +13,10 @@ class Heart extends React.Component {
     }
 
     componentDidMount() {
+        this.fetchHearts();
+    }
+
+    fetchHearts() {
         const { food } = this.props;
         const req = new HeartsRequest();
         req.addKeys(food);
@@ -30,11 +34,17 @@ class Heart extends React.Component {
             .catch((err) => console.log(err));
     }
 
+    componentDidUpdate(oldProps) {
+        if (this.props.food !== oldProps.food) {
+            this.fetchHearts();
+        }
+    }
+
     updateCount(heartsReply) {
         const { food } = this.props;
         heartsReply.getCountsList().forEach((count) => {
             if (count.getKey() === food) {
-                this.setState({count: count.getCount()});
+                this.setState({ count: count.getCount() });
             }
         });
     }
@@ -64,7 +74,7 @@ class Heart extends React.Component {
                     shape="circle"
                     type="danger"
                     ghost
-                    style={{ padding: '0px', margin: '5px' }}
+                    style={{ padding: '0px', margin: '5px', paddingTop: '1px' }}
                     onClick={() => this.addHeart()}
                 >
                     {icon}
