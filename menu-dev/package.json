@@ -5,7 +5,7 @@
   "homepage": "https://tendiesti.me/menu/",
   "dependencies": {
     "antd": "^3.25.0",
-    "mdining-proto": "0.0.9",
+    "mdining-proto": "0.1.0",
     "moment": "^2.24.0",
     "react": "^16.11.0",
     "react-device-detect": "^1.9.10",

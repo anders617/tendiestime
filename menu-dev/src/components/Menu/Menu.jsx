@@ -3,7 +3,7 @@ import moment from 'moment';
 import { BrowserView, MobileView, } from "react-device-detect";
 import { Row, Col, Card, Spin, Icon, DatePicker, Radio } from 'antd';
 import mdiningclient from '../../api/mdiningservice';
-import { DiningHallsRequest, MenuRequest } from 'mdining-proto';
+import { DiningHallsRequest, MenuRequest, HeartsRequest } from 'mdining-proto';
 import Category from './Category';
 
 const dateFormat = 'YYYY-MM-DD';
@@ -19,8 +19,10 @@ class Menu extends Component {
             selectedDate: moment(),
             selectedMenu: 0,
             loading: true,
+            heartCounts: {},
         };
         this.menuCache = {};
+        this.heartStream = null;
     }
 
     componentDidMount() {
@@ -36,7 +38,7 @@ class Menu extends Component {
     getHoursOfMenu(menu) {
         const { selectedDiningHall, selectedDate, diningHalls } = this.state;
         const dayEvent = diningHalls.length === 0 ? null : diningHalls[selectedDiningHall].getDayeventsList().find((dayEvent) => moment(dayEvent.getKey()).day() === selectedDate.day());
-        const hours =  !dayEvent ? null : dayEvent.getCalendareventList().find((event) => event.getEventtitle().toLowerCase() === menu.getMeal().toLowerCase());
+        const hours = !dayEvent ? null : dayEvent.getCalendareventList().find((event) => event.getEventtitle().toLowerCase() === menu.getMeal().toLowerCase());
         if (!hours) return null;
         return hours;
     }
@@ -58,7 +60,7 @@ class Menu extends Component {
         const now = moment();
         if (selectedDate.isSame(now, 'day')) {
             const withCategories = menus
-                .map((menu, idx) => {return {idx, menu};})
+                .map((menu, idx) => { return { idx, menu }; })
                 .filter((item) => item.menu.getHascategories() && this.getEndTimeOfMenu(item.menu) && this.getEndTimeOfMenu(item.menu).isSameOrAfter(now));
             if (withCategories.length === 0) return 0;
             const closestMenuInTime = withCategories.sort((a, b) => {
@@ -84,7 +86,7 @@ class Menu extends Component {
         const cacheKey = selectedCampus + selectedDiningHall + selectedDate.format(dateFormat);
         if (this.menuCache.hasOwnProperty(cacheKey)) {
             const menus = this.menuCache[cacheKey];
-            this.setState({ menus, selectedMenu: this.firstMenuWithCategories(menus) });
+            this.setMenus(menus);
             return;
         }
         const req = new MenuRequest();
@@ -96,9 +98,31 @@ class Menu extends Component {
             .then((menu) => {
                 const menus = menu.getMenusList()
                 this.menuCache[cacheKey] = menus;
-                this.setState({ menus, selectedMenu: this.firstMenuWithCategories(menus), loading: false });
+                this.setMenus(menus);
             })
             .catch((error) => console.log(error));
+    }
+
+    fetchHeartCountsForMenus(menus) {
+        const req = new HeartsRequest();
+        const names = menus
+            .map((menu) => menu.getCategoryList())                  // List of list of category
+            .reduce((a, b) => a.concat(b), [])                            // List of category
+            .map((category) => category.getMenuitemList())          // List of list of menu items
+            .reduce((a, b) => a.concat(b), [])                            // List of menu items
+            .map((menuItem) => menuItem.getName().toLowerCase());   // List of names
+        new Set(names).forEach((name) => req.addKeys(name));
+        console.log(req);
+        mdiningclient.getHearts(req)
+            .then((res) => this.updateHeartCounts(res))
+            .catch((err) => console.log(err));
+    }
+
+    setMenus(menus) {
+        this.fetchHeartCountsForMenus(menus);
+        this.stopListeningHearts();
+        this.startListeningHeartsForMenus(menus);
+        this.setState({ menus, selectedMenu: this.firstMenuWithCategories(menus), loading: false });
     }
 
     onChangeDate(selectedDate) {
@@ -115,8 +139,50 @@ class Menu extends Component {
         this.setState({ selectedCampus, selectedDiningHall: diningHallIndex }, () => this.fetchMenu());
     }
 
+    onHeartClick(foodName) {
+        const req = new HeartsRequest();
+        req.addKeys(foodName);
+        mdiningclient.addHeart(req)
+            .then((res) => this.updateHeartCounts(res))
+            .catch((err) => console.log(err));
+    }
+
+    updateHeartCounts(heartsReply) {
+        const { heartCounts } = this.state;
+        const newHeartCounts = { ...heartCounts };
+        heartsReply.getCountsList().forEach((count) => newHeartCounts[count.getKey()] = count.getCount());
+        this.setState({ heartCounts: newHeartCounts });
+    }
+
+    startListeningHeartsForMenus(menus) {
+        const req = new HeartsRequest();
+        const names = menus
+            .map((menu) => menu.getCategoryList())                  // List of list of category
+            .reduce((a, b) => a.concat(b), [])                            // List of category
+            .map((category) => category.getMenuitemList())          // List of list of menu items
+            .reduce((a, b) => a.concat(b), [])                            // List of menu items
+            .map((menuItem) => menuItem.getName().toLowerCase());   // List of names
+        new Set(names).forEach((name) => req.addKeys(name));
+        this.heartStream = mdiningclient.streamHearts(req);
+        this.heartStream.on('data', (res) => this.updateHeartCounts(res));
+        this.heartStream.on('status', (status) => console.log(status));
+        this.heartStream.on('error', (err) => console.log(err));
+        this.heartStream.on('end', () => console.log('End of stream'));
+    }
+
+    stopListeningHearts() {
+        if (this.heartStream !== null) {
+            this.heartStream.cancel();
+        }
+        this.heartStream = null;
+    }
+
+    componentWillUnmount() {
+        this.stopListeningHearts();
+    }
+
     renderCategories() {
-        const { selectedMenu, menus } = this.state;
+        const { selectedMenu, menus, heartCounts } = this.state;
         if (menus.length === 0) {
             return (<b>There's no data for this date :(</b>)
         }
@@ -124,7 +190,7 @@ class Menu extends Component {
         if (!menu.getHascategories()) {
             return (<b>{menu.getDescription()}</b>)
         }
-        return menu.getCategoryList().map((category) => (<Category key={category.getName()} category={category} />));
+        return menu.getCategoryList().map((category) => (<Category key={category.getName()} category={category} heartCounts={heartCounts} onHeartClick={(foodName) => this.onHeartClick(foodName)} />));
     }
 
     render() {
@@ -144,7 +210,7 @@ class Menu extends Component {
                     <Radio.Button style={{ minWidth: 205 }} key={entry.idx} value={entry.idx}>{entry.diningHall.getName()}</Radio.Button>
                 );
             });
-        const hours =  diningHalls.length === 0 || menus.length === 0 ? null : this.getHoursOfMenu(menus[selectedMenu]);
+        const hours = diningHalls.length === 0 || menus.length === 0 ? null : this.getHoursOfMenu(menus[selectedMenu]);
         const startTime = hours ? moment(hours.getEventtimestart()) : moment();
         const endTime = hours ? moment(hours.getEventtimeend()) : moment();
 
