@@ -42,9 +42,13 @@ class ChartContainer extends Component {
             const data = foodStats.map((stat) => {
                 const attributes = stat.getAttributecountsMap();
                 const totalFoodMealsServed = stat.getTotalfoodmealsserved();
+                let attributeCount = attributes.get(attribute)
+                if (isNaN(attributeCount)) {
+                    attributeCount = 0;
+                }
                 return {
                     x: new Date(stat.getDate()),
-                    y: 100 * attributes.get(attribute) / totalFoodMealsServed,
+                    y: 100 * attributeCount / totalFoodMealsServed,
                 };
             });
             data.sort((a, b) => a.x - b.x);
