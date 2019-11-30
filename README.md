@@ -2,7 +2,7 @@
 
 A website to help michigan students find where their favorite food is being served currently live @ [tendiesti.me](https://tendiesti.me).
 
-Makes use of the [michigan-dining-api](https://github.com/anders617/michigan-dining-api) hosted on [heroku](https://michigan-dining-api.herokuapp.com) and the corresponding [mdining-proto](https://github.com/anders617/mdining-proto) library.
+Makes use of the [michigan-dining-api](https://github.com/anders617/michigan-dining-api) hosted on [heroku](https://michigan-dining-api.tendiesti.me) and the corresponding [mdining-proto](https://github.com/anders617/mdining-proto) library.
 
 ## Development
 
