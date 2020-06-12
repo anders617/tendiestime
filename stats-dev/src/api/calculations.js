@@ -158,6 +158,9 @@ const calculateTotalMealsServed = (summaryStats) => {
 const calculateMenuItemsPerUniqueFood = (summaryStats) => {
     const uniqueFoodsData = caluclateNumUniqueFoods(summaryStats);
     const totalMenuItemsPerUniqueFoodData = calculateTotalMealsServed(summaryStats).map((data, idx) => {
+        if (uniqueFoodsData[idx].y === 0) {
+            return { x: data.x, y: 0 };
+        }
         return { x: data.x, y: data.y / uniqueFoodsData[idx].y };
     });
     totalMenuItemsPerUniqueFoodData.sort((a, b) => a.x - b.x);
