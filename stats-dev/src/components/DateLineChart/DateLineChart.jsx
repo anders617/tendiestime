@@ -20,7 +20,7 @@ const topInset = 70;
 const xAccessor = (d) => d.x
 const yAccessor = (d) => d.y
 
-function DateLineChart({ height, width, data, title }) {
+function DateLineChart({ height, width, data, title, yLabel }) {
   return (
     <div className="DateLineChart" style={{ height: height, minWidth: '300px', flexBasis: '0px', margin: '15px', flexGrow: 1, flexShrink: 1 }}>
       <Tilt className="Tilt" options={{ max : 5, scale: 1.05 }} style={{width: '100%', height: '100%'}}>
@@ -59,7 +59,7 @@ function DateLineChart({ height, width, data, title }) {
                   <AxisLeft
                     left={leftInset}
                     scale={yScale}
-                    label="Percent"
+                    label={yLabel}
                     labelProps={{
                       fill: axisColor,
                       textAnchor: 'middle',
