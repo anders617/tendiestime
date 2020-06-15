@@ -137,7 +137,7 @@ class ChartContainer extends Component {
     renderError() {
         const { error } = this.state;
         return (
-            <div className="ChartContainer" style={{ color: 'black', fontSize: '36px', height: '80vh', verticalAlign: 'middle', lineHeight: '80vh' }}>
+            <div className="ChartContainer" style={{ color: 'black', fontSize: '18px', height: '80vh', verticalAlign: 'middle', lineHeight: '80vh' }}>
                 {typeof (error) === 'string' ? error : "Something went wrong :("}
             </div>
         );
