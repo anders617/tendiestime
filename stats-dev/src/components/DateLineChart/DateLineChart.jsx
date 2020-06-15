@@ -17,6 +17,7 @@ const rightInset = 50;
 const bottomInset = 60;
 const topInset = 70;
 const lineCurveType = curveLinear;
+const lineStrokeWidth = 1.35;
 
 const xAccessor = (d) => d.x
 const yAccessor = (d) => d.y
@@ -53,7 +54,7 @@ function DateLineChart({ height, width, data, title, yLabel }) {
                   x={d => xScale(xAccessor(d))}
                   y={d => yScale(yAccessor(d))}
                   stroke={axisColor}
-                  strokeWidth={2}
+                  strokeWidth={lineStrokeWidth}
                   curve={lineCurveType}
                 />
                 <Group>
