@@ -5,6 +5,10 @@ import Menu from './components/Menu/Menu';
 
 const { Header, Footer, Content } = Layout;
 
+const linkStyle = {
+  color: '#000000', 
+  textDecoration: 'none',
+};
 
 function App() {
   return (
@@ -18,7 +22,11 @@ function App() {
             </Col>
           </Row>
         </Content>
-        <Footer style={{backgroundColor: 'transparent'}}>&copy; 2019 Anders Boberg</Footer>
+        <Footer style={{backgroundColor: 'transparent'}} >
+          <a href="/">tendies time</a><br />
+          <a href="/stats">mdining statistics</a><br />
+          &copy; 2019-2020 <a href="https://andersboberg.com" target="_blank" rel="noopener noreferrer" style={linkStyle}>Anders Boberg</a>
+        </Footer>
       </Layout>
     </div>
   );
