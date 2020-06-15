@@ -29,7 +29,6 @@ class ChartContainer extends Component {
     componentDidMount() {
         mDiningClient.getSummaryStats(new SummaryStatsRequest())
             .then((res) => {
-                console.log(res.getStats());
                 this.setState({ summaryStats: res.getStats(), error: null });
             }).catch((error) => {
                 if (error.code === 14) {

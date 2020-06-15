@@ -3,27 +3,21 @@ const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Satur
 const getFoodsByDayFiltered = (summaryStats) => {
     const weekdayFoodCounts = summaryStats.getLatestweekdayfoodcountsMap();
     const sortedFilteredEntriesByDay = {};
-    const getSortedFilteredEntries = (day) => weekdayFoodCounts.get(day).getDataMap().getEntryList()
+    const statsFoods = summaryStats.getFoodsList();
+    const getSortedFilteredEntries = (day) => weekdayFoodCounts.get(day).getCountsList().map((count, idx) => ([statsFoods[idx], count]))
         .sort((a, b) => a[1] - b[1])
-        .filter((v) => !v[0].includes('no service at this time'))
-    const foods = []
-    weekdays.forEach((day) => getSortedFilteredEntries(day).forEach((entry) => foods.push(entry[0])));
-    const foodTotals = foods.map((food) => {
-        return weekdays.map((day) => {
-            const countsForDay = weekdayFoodCounts.get(day).getDataMap();
-            return countsForDay.has(food) ? countsForDay.get(food) : 0;
-        }).reduce((a, b) => a + b, 0);
+        .filter((v) => !v[0].includes('no service at this time'));
+    const foodTotals = statsFoods.map((_food, foodIdx) => {
+        return weekdays.map((day) => weekdayFoodCounts.get(day).getCountsList()[foodIdx])
+                      .reduce((a, b) => a + b, 0);
     });
-    const numberOfDaysServedOn = foods.map((food) => {
-        return weekdays.map((day) => {
-            const countsForDay = weekdayFoodCounts.get(day).getDataMap();
-            if (!countsForDay.has(food)) return 0;
-            return countsForDay.get(food) > 0 ? 1 : 0;
-        }).reduce((a, b) => a + b, 0);
+    const numberOfDaysServedOn = statsFoods.map((_food, foodIdx) => {
+        return weekdays.map((day) => weekdayFoodCounts.get(day).getCountsList()[foodIdx] > 0 ? 1 : 0)
+                       .reduce((a, b) => a + b, 0);
     });
     weekdays.forEach((day) => {
         sortedFilteredEntriesByDay[day] = getSortedFilteredEntries(day)
-            .map((entry) => ({ entry: entry, foodIndex: foods.indexOf(entry[0]) }))
+            .map((entry) => ({ entry: entry, foodIndex: statsFoods.indexOf(entry[0]) }))
             .filter((v) => numberOfDaysServedOn[v.foodIndex] > 4)
             .filter((v) => foodTotals[v.foodIndex] > 100)
             .map((v) => v.entry);
@@ -34,14 +28,11 @@ const getFoodsByDayFiltered = (summaryStats) => {
 const calculateTimesServedMoreThanAverage = (summaryStats) => {
     const weekdayFoodCounts = summaryStats.getLatestweekdayfoodcountsMap();
     const sortedFilteredEntriesByDay = getFoodsByDayFiltered(summaryStats);
-    const foods = []
-    weekdays.forEach((day) => sortedFilteredEntriesByDay[day].forEach((entry) => foods.push(entry[0])));
+    const foods = summaryStats.getFoodsList();
     // Average times served per day
-    const averages = foods.map((food) => {
-        return weekdays.map((day) => {
-            const countsForDay = weekdayFoodCounts.get(day).getDataMap();
-            return (countsForDay.has(food) ? countsForDay.get(food) : 0);
-        }).reduce((a, b) => a + b, 0) / weekdays.length;
+    const averages = foods.map((_food, foodIdx) => {
+        return weekdays.map((day) => weekdayFoodCounts.get(day).getCountsList()[foodIdx])
+                       .reduce((a, b) => a + b, 0) / weekdays.length;
     });
     return weekdays.map((day) => {
         return sortedFilteredEntriesByDay[day]
@@ -169,7 +160,8 @@ const calculateMenuItemsPerUniqueFood = (summaryStats) => {
 
 const calculateFoodFrequencyByWeekday = (summaryStats, food) => {
     const weekdayFoodCounts = summaryStats.getLatestweekdayfoodcountsMap();
-    return weekdays.map((day) => weekdayFoodCounts.get(day).getDataMap().get(food)).map((count, idx) => ({ x: weekdays[idx], y: count }));
+    const foodIdx = summaryStats.getFoodsList().indexOf(food);
+    return weekdays.map((day) => weekdayFoodCounts.get(day).getCountsList()[foodIdx]).map((count, idx) => ({ x: weekdays[idx], y: count }));
 };
 
 export {

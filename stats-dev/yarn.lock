@@ -6194,10 +6194,10 @@ md5.js@^1.3.4:
     inherits "^2.0.1"
     safe-buffer "^5.1.2"
 
-mdining-proto@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/mdining-proto/-/mdining-proto-0.2.1.tgz#2f2b9b1b7fa009fb81b35d64dedc7d8cf1c162df"
-  integrity sha512-x2nWP5aNcTc+m8AKmOYmUQ/x4wgjWiWhhLpzrh3hFEIKzCbLc33KLtSlf2F9ZftqG7pK7gWx8J1zFdPHorFy7Q==
+mdining-proto@0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/mdining-proto/-/mdining-proto-0.2.2.tgz#6c468f6d302b6a3bac6ca5d60b298e156cee7a2c"
+  integrity sha512-FVTDWzx9bqnF3pMIpvt+deOhhiHViwQ/4Xh8ihoewpzn6jd4+Y3pcdYcC52Hm9us7HKH26uwl5yjz+HL/Rq5TA==
   dependencies:
     google-protobuf "^3.10.0"
     grpc-web "^1.0.6"
