@@ -4,7 +4,7 @@ import { GradientPinkBlue, GradientOrangeRed } from '@vx/gradient';
 import { ParentSize } from '@vx/responsive';
 import { LinePath } from '@vx/shape';
 import { scaleLinear, scaleTime } from '@vx/scale';
-import { curveCatmullRom } from '@vx/curve';
+import { curveLinear } from '@vx/curve';
 import { Group } from '@vx/group';
 import { AxisLeft, AxisBottom } from '@vx/axis';
 import { Text } from '@vx/text';
@@ -16,6 +16,7 @@ const leftInset = 75;
 const rightInset = 50;
 const bottomInset = 60;
 const topInset = 70;
+const lineCurveType = curveLinear;
 
 const xAccessor = (d) => d.x
 const yAccessor = (d) => d.y
@@ -53,7 +54,7 @@ function DateLineChart({ height, width, data, title, yLabel }) {
                   y={d => yScale(yAccessor(d))}
                   stroke={axisColor}
                   strokeWidth={2}
-                  curve={curveCatmullRom}
+                  curve={lineCurveType}
                 />
                 <Group>
                   <AxisLeft
